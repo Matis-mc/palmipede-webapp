@@ -34,6 +34,14 @@ public class PonteService {
         return repository.getPonteByBatiment(idBatiment);
     }
 
+    public List<Ponte> getPonteByNid( Long idNid){
+        return repository.getPonteByNid(idNid);
+    }
+
+    public List<Ponte> getPonteByPalmipede(Long idPalmipede){
+        return repository.getPonteByPalmipede(idPalmipede);
+    }
+
     public Ponte createPonte(PonteCreationRequest request){
         return repository.createPonte(request);
     }

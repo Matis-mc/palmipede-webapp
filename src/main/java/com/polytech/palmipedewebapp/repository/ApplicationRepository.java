@@ -1,13 +1,8 @@
 package com.polytech.palmipedewebapp.repository;
 
 
-import com.polytech.palmipedewebapp.entities.Batiment;
-import com.polytech.palmipedewebapp.entities.Espece;
-import com.polytech.palmipedewebapp.entities.Palmipede;
-import com.polytech.palmipedewebapp.entities.Ponte;
-import com.polytech.palmipedewebapp.requests.EspeceCreationRequest;
-import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
-import com.polytech.palmipedewebapp.requests.PonteCreationRequest;
+import com.polytech.palmipedewebapp.entities.*;
+import com.polytech.palmipedewebapp.requests.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -48,6 +43,14 @@ public class ApplicationRepository {
         return null;
     }
 
+    public List<Ponte> getPonteByNid( Long idNid){
+        return null;
+    }
+
+    public List<Ponte> getPonteByPalmipede(Long idPalmipede){
+        return null;
+    }
+
     public Ponte createPonte(PonteCreationRequest request){
         return null;
     }
@@ -67,6 +70,40 @@ public class ApplicationRepository {
     public List<Batiment> getBatiment(){
         return null;
     }
+
+    public Batiment getBatimentById(Long id){return null;}
+
+    public Batiment createBatiment(BatimentCreationRequest request){return null;}
+
+    //====================================== Nid ================================================//
+
+    public List<Nid> getNid(){
+        return null;
+    }
+
+    public Nid getNidById(Long id){return null;}
+
+    public Nid createNid(NidCreationRequest request){return null;}
+
+    //====================================== Balance ================================================//
+
+    public List<Balance> getBalance(){
+        return null;
+    }
+
+    public Balance getBalanceById(Long id){return null;}
+
+    public Balance createBalance(BalanceCreationRequest request){return null;}
+
+    //====================================== Balance ================================================//
+
+    public List<AntenneRFID> getAntenne(){
+        return null;
+    }
+
+    public AntenneRFID getAntenneById(Long id){return null;}
+
+    public AntenneRFID createAntenne(AntenneCreationRequest request){return null;}
 
 
 }
