@@ -5,6 +5,7 @@ import com.polytech.palmipedewebapp.entities.Espece;
 import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.entities.Ponte;
 import com.polytech.palmipedewebapp.repository.PalmipedeRepository;
+import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,10 @@ public class PalmipedeService {
 
     public List<Palmipede> getAllPalmipede(){
         return repository.getPalmipede();
+    }
+
+    public Palmipede createPalmipede(PalmipedeCreationRequest request){
+        return repository.createPalmipede(request);
     }
 
 }

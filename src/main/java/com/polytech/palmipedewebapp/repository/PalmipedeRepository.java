@@ -5,6 +5,7 @@ import com.polytech.palmipedewebapp.entities.Batiment;
 import com.polytech.palmipedewebapp.entities.Espece;
 import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.entities.Ponte;
+import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -19,6 +20,10 @@ public class PalmipedeRepository {
     }
 
     public Palmipede getPalmipedeById(Long id){
+        return null;
+    }
+
+    public Palmipede createPalmipede(PalmipedeCreationRequest request){
         return null;
     }
 
