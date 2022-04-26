@@ -1,9 +1,10 @@
 package com.polytech.palmipedewebapp.controller;
 
-
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.requests.*;
 import com.polytech.palmipedewebapp.service.InfraService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.List;
 @Controller
 @RequestMapping("infra")
 public class InfraController {
+
+    Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private InfraService service;
@@ -95,6 +98,7 @@ public class InfraController {
     public ResponseEntity<AntenneRFID> createAntenne(
             @RequestBody AntenneCreationRequest request
     ) throws URISyntaxException {
+        LOGGER.info(request.toString());
         AntenneRFID AntenneCreated = service.createAntenne(request);
         URI uri = new URI(antenneURL + AntenneCreated.getIdAntenne());
         HttpHeaders headers = new HttpHeaders();

@@ -1,9 +1,10 @@
 package com.polytech.palmipedewebapp.controller;
 
-import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.entities.Ponte;
 import com.polytech.palmipedewebapp.requests.PonteCreationRequest;
 import com.polytech.palmipedewebapp.service.PonteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,12 @@ public class PonteController {
     @Autowired
     private PonteService service;
 
+    Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private String ponteURL = "ponte/";
 
     @GetMapping()
     public ResponseEntity<List<Ponte>> getPontes(){
+
         return new ResponseEntity(service.getPonte(), HttpStatus.OK);
     }
 
@@ -69,6 +72,7 @@ public class PonteController {
     public ResponseEntity<Ponte> createPonte(
             @RequestBody PonteCreationRequest request
             ) throws URISyntaxException {
+        LOGGER.info(request.toString());
         Ponte ponteCreated = service.createPonte(request);
         URI uri = new URI(ponteURL + ponteCreated.getIdPalmipede());
         HttpHeaders headers = new HttpHeaders();

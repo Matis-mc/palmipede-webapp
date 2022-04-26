@@ -5,6 +5,8 @@ import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.requests.EspeceCreationRequest;
 import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import com.polytech.palmipedewebapp.service.PalmipedeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -21,6 +23,8 @@ import java.util.List;
 @Controller
 @RequestMapping("palmipede")
 public class PalmipedeController {
+
+    Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private String palmipedeURL = "palmipede/";
     private String especeUrl = "url/";
@@ -61,6 +65,7 @@ public class PalmipedeController {
     public ResponseEntity<Palmipede> createPalmipede(
             @RequestBody PalmipedeCreationRequest request
             ) throws URISyntaxException {
+        LOGGER.info(request.toString());
         Palmipede palmipedeCreated = service.createPalmipede(request);
         URI uri = new URI(palmipedeURL + palmipedeCreated.getIdPalmipede());
         HttpHeaders headers = new HttpHeaders();
@@ -72,6 +77,7 @@ public class PalmipedeController {
     public ResponseEntity<Espece> createEspece(
             @RequestBody EspeceCreationRequest request
             ) throws URISyntaxException {
+        LOGGER.info(request.toString());
         Espece especeCreated = service.createEspece(request);
         URI uri = new URI(especeUrl + especeCreated.getIdEspece());
         HttpHeaders headers = new HttpHeaders();
