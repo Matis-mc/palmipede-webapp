@@ -40,12 +40,17 @@ public class PalmipedeController {
         return new ResponseEntity(service.getPalmipedeById(idPalmipede), HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Palmipede> getCount(){
+        return new ResponseEntity(service.getCount(), HttpStatus.OK);
+    }
+
     @GetMapping("/espece")
     public ResponseEntity<List<Espece>> getEspece(){
         return new ResponseEntity(service.getAllEspece(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idEspece}")
+    @GetMapping("/espece/{idEspece}")
     public ResponseEntity<Espece> getEspeceById(
             @PathVariable Long idEspece
     ){

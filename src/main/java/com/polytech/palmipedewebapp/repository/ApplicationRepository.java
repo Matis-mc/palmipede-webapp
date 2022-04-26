@@ -2,7 +2,10 @@ package com.polytech.palmipedewebapp.repository;
 
 
 import com.polytech.palmipedewebapp.entities.*;
+import com.polytech.palmipedewebapp.mapper.PalmipedeRowMapper;
 import com.polytech.palmipedewebapp.requests.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -12,16 +15,26 @@ import java.util.List;
 @Repository
 public class ApplicationRepository {
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     //====================================== Palmipede ================================================//
+
     public List<Palmipede> getPalmipede(){
-        return null;
+         return jdbcTemplate.query("SELECT * FROM palmipede", new PalmipedeRowMapper());
+    }
+
+    public int getCountPalmipede(){
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM palmipede", Integer.class);
     }
 
     public Palmipede getPalmipedeById(Long id){
-        return null;
+        return jdbcTemplate.queryForObject("SELECT * FROM palmipede WHERE id_palmipede = ?", new Object[]{id}, new PalmipedeRowMapper());
+
     }
 
     public Palmipede createPalmipede(PalmipedeCreationRequest request){
+        int result = jdbcTemplate.update("INSERT INTO palmipede(id_espece) VALUES(?)", request.getIdEspece() );
+
         return null;
     }
 

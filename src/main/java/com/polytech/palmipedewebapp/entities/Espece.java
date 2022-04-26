@@ -1,12 +1,14 @@
 package com.polytech.palmipedewebapp.entities;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.List;
 
 public class Espece {
 
+    @Id
     private Long idEspece;
     private String name;
-    private List<Long> idBatiments;
 
     //paramètre de l'espece
     private Float poidMinimalOeuf;
@@ -24,11 +26,18 @@ public class Espece {
 
     public Espece(String name, List<Long> idBatiments, Float poidMinimalOeuf, Float poidMaximalOeuf, Float poidMinimalPalmipede, Float poidMaximalPalmipede) {
         this.name = name;
-        this.idBatiments = idBatiments;
         this.poidMinimalOeuf = poidMinimalOeuf;
         this.poidMaximalOeuf = poidMaximalOeuf;
         this.poidMinimalPalmipede = poidMinimalPalmipede;
         this.poidMaximalPalmipede = poidMaximalPalmipede;
+    }
+
+    public Espece() {
+
+    }
+
+    public void setIdEspece(Long idEspece) {
+        this.idEspece = idEspece;
     }
 
     public Long getIdEspece() {
@@ -43,13 +52,6 @@ public class Espece {
         this.name = name;
     }
 
-    public List<Long> getIdBatiments() {
-        return idBatiments;
-    }
-
-    public void setIdBatiments(List<Long> idBatiments) {
-        this.idBatiments = idBatiments;
-    }
 
     public Float getPoidMinimalOeuf() {
         return poidMinimalOeuf;
@@ -88,7 +90,6 @@ public class Espece {
         return "Espece{" +
                 "idEspece=" + idEspece +
                 ", name='" + name + '\'' +
-                ", idBatiments=" + idBatiments +
                 ", poidMinimalOeuf=" + poidMinimalOeuf +
                 ", poidMaximalOeuf=" + poidMaximalOeuf +
                 ", poidMinimalPalmipede=" + poidMinimalPalmipede +

@@ -27,6 +27,10 @@ public class PalmipedeService {
         return repository.getPalmipedeById(id);
     }
 
+    public int getCount(){
+        return repository.getCountPalmipede();
+    }
+
     public Espece getEspeceById(Long id){
         return repository.getEspeceById(id);
     }

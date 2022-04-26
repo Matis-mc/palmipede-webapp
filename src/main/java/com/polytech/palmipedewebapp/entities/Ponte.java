@@ -1,9 +1,12 @@
 package com.polytech.palmipedewebapp.entities;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class Ponte {
 
+    @Id
     private Long idPonte;
     private Date datePonte;
     private Long idPalmipede;

@@ -1,47 +1,50 @@
 package com.polytech.palmipedewebapp.entities;
 
+import org.springframework.data.annotation.Id;
+
 public class Nid {
 
-    private Float idNid;
-    private Float idBatiment;
-    private Float idAntenne;
-    private Float idBalance;
+    @Id
+    private Long idNid;
+    private Long idBatiment;
+    private Long idAntenne;
+    private Long idBalance;
 
-    public Nid(Float idBatiment, Float idAntenne, Float idBalance) {
+    public Nid(Long idBatiment, Long idAntenne, Long idBalance) {
         this.idBatiment = idBatiment;
         this.idAntenne = idAntenne;
         this.idBalance = idBalance;
     }
 
-    public Nid(Float idBatiment) {
+    public Nid(Long idBatiment) {
         this.idBatiment = idBatiment;
     }
 
-    public Float getIdNid() {
+    public Long getIdNid() {
         return idNid;
     }
 
-    public Float getIdBatiment() {
+    public Long getIdBatiment() {
         return idBatiment;
     }
 
-    public void setIdBatiment(Float idBatiment) {
+    public void setIdBatiment(Long idBatiment) {
         this.idBatiment = idBatiment;
     }
 
-    public Float getIdAntenne() {
+    public Long getIdAntenne() {
         return idAntenne;
     }
 
-    public void setIdAntenne(Float idAntenne) {
+    public void setIdAntenne(Long idAntenne) {
         this.idAntenne = idAntenne;
     }
 
-    public Float getIdBalance() {
+    public Long getIdBalance() {
         return idBalance;
     }
 
-    public void setIdBalance(Float idBalance) {
+    public void setIdBalance(Long idBalance) {
         this.idBalance = idBalance;
     }
 

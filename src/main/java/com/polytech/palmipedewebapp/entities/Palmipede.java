@@ -1,23 +1,36 @@
 package com.polytech.palmipedewebapp.entities;
 
+
+import org.springframework.data.annotation.Id;
+
 public class Palmipede {
 
-    private Float idPalmipede;
-    private Float idEspece;
+    @Id
+    private Long idPalmipede;
+    private Long idEspece;
 
-    public Palmipede(Float idEspece) {
+    public Palmipede(Long idEspece) {
         this.idEspece = idEspece;
     }
 
-    public Float getIdPalmipede() {
+    public Palmipede() {
+
+    }
+
+
+    public Long getIdPalmipede() {
         return idPalmipede;
     }
 
-    public Float getIdEspece() {
+    public void setIdPalmipede(Long idPalmipede) {
+        this.idPalmipede = idPalmipede;
+    }
+
+    public Long getIdEspece() {
         return idEspece;
     }
 
-    public void setIdEspece(Float idEspece) {
+    public void setIdEspece(Long idEspece) {
         this.idEspece = idEspece;
     }
 
