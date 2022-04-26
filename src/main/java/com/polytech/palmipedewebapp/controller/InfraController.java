@@ -3,6 +3,7 @@ package com.polytech.palmipedewebapp.controller;
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.requests.*;
 import com.polytech.palmipedewebapp.service.InfraService;
+import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
 @RequestMapping("infra")
@@ -52,7 +55,14 @@ public class InfraController {
         URI uri = new URI(nidURL + NidCreated.getIdNid());
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(NidCreated);
+        return ok().headers(headers).body(NidCreated);
+    }
+
+    @DeleteMapping("/nid/{idNid}")
+    public void deleteNid(
+            @PathVariable Long idNid
+    ){
+        service.deleteNid(idNid);
     }
 
     //====================================== Balance ================================================//
@@ -77,7 +87,7 @@ public class InfraController {
         URI uri = new URI(balanceURL + BalanceCreated.getIdbalance());
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(BalanceCreated);
+        return ok().headers(headers).body(BalanceCreated);
     }
 
     //====================================== Antenne ================================================//
@@ -103,7 +113,7 @@ public class InfraController {
         URI uri = new URI(antenneURL + AntenneCreated.getIdAntenne());
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(AntenneCreated);
+        return ok().headers(headers).body(AntenneCreated);
     }
 
     //====================================== Batiment ================================================//
@@ -128,6 +138,6 @@ public class InfraController {
         URI uri = new URI(batimentURL + batimentCreated.getIdBatiment());
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(batimentCreated);
+        return ok().headers(headers).body(batimentCreated);
     }
 }

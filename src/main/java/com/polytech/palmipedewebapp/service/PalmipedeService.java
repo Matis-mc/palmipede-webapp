@@ -65,4 +65,11 @@ public class PalmipedeService {
         return repository.createEspece(request);
     }
 
+    public void deletePalmipede(Long id){
+        repository.deletePalmipedeById(id);
+    }
+    public void deleteEspece(Long id){
+        repository.deleteEspeceById(id);
+    }
+
 }

@@ -46,4 +46,8 @@ public class PonteService {
         return repository.createPonte(request);
     }
 
+    public void deletePonte(Long id){
+        repository.deletePonteById(id);
+    }
+
 }

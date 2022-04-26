@@ -38,6 +38,10 @@ public class ApplicationRepository {
         return null;
     }
 
+    public int deletePalmipedeById(Long id){
+        return jdbcTemplate.update("DELETE FROM PALMIPEDE WHERE id_palmipede = ?", new Object[]{id});
+    }
+
     //====================================== Ponte ================================================//
 
     public List<Ponte> getAllPonte(){
@@ -79,6 +83,10 @@ public class ApplicationRepository {
         return null;
     }
 
+    public int deletePonteById(Long id){
+        return jdbcTemplate.update("DELETE FROM PONTE WHERE id_ponte = ?", new Object[]{id});
+    }
+
     //====================================== Espece ================================================//
 
     public List<Espece> getEspece(){
@@ -95,7 +103,13 @@ public class ApplicationRepository {
 
     public Espece createEspece(EspeceCreationRequest request){
         int result = jdbcTemplate.update("INSERT INTO ESPECE(nom, poid_minimal_palmipede, poid_maximal_palmipede, poid_minimal_oeuf, poid_maximal_oeuf) VALUES(?, ?, ?, ?, ?)", request.getName(), request.getPoidMinimalPalmipede(), request.getPoidMaximalPalmipede(), request.getPoidMinimalOeuf(), request.getPoidMaximalOeuf() );
-        return null;}
+        return null;
+    }
+
+    public int deleteEspeceById(Long id){
+        return jdbcTemplate.update("DELETE FROM ESPECE WHERE id_espece = ?", new Object[]{id});
+
+    }
 
     //====================================== Batiment ================================================//
 
@@ -123,7 +137,13 @@ public class ApplicationRepository {
 
         int result = jdbcTemplate.update("INSERT INTO BATIMENT(nom, id_espece) VALUES(?, ?)", request.getName(), request.getIdEspece());
 
-        return null;}
+        return null;
+    }
+
+    public int deleteBatimentById(Long id){
+        return jdbcTemplate.update("DELETE FROM BATIMENT WHERE id_batiment = ?", new Object[]{id});
+
+    }
 
     //====================================== Nid ================================================//
 
@@ -147,6 +167,11 @@ public class ApplicationRepository {
 
     }
 
+    public int deleteNidById(Long id){
+        return jdbcTemplate.update("DELETE FROM NID WHERE id_nid = ?", new Object[]{id});
+
+    }
+
     //====================================== Balance ================================================//
 
     public List<Balance> getBalance(){
@@ -163,6 +188,12 @@ public class ApplicationRepository {
     public Balance createBalance(BalanceCreationRequest request){
         int result = jdbcTemplate.update("INSERT INTO BALANCE");
         return null;
+
+    }
+
+    public int deleteBalanceById(Long id){
+
+        return jdbcTemplate.update("DELETE FROM BALANCE WHERE id_balance = ?", new Object[]{id});
 
     }
 
@@ -183,5 +214,9 @@ public class ApplicationRepository {
         return null;
     }
 
+    public int deleteAntenneById(Long id){
+        return jdbcTemplate.update("DELETE FROM ANTENNE WHERE id_antenne = ?", new Object[]{id});
+
+    }
 
 }

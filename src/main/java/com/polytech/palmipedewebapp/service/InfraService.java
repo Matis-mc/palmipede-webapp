@@ -33,6 +33,10 @@ public class InfraService {
         return repository.createBatiment(request);
     }
 
+    public void deleteBatiment(Long id){
+        repository.deleteBatimentById(id);
+    }
+
     //====================================== Nid ================================================//
 
     public List<Nid> getNid(){
@@ -45,7 +49,12 @@ public class InfraService {
     }
 
     public Nid createNid(NidCreationRequest request){
-        return repository.createNid(request);}
+        return repository.createNid(request);
+    }
+
+    public void deleteNid(Long id){
+        repository.deleteNidById(id);
+    }
 
     //====================================== Balance ================================================//
 
@@ -64,7 +73,11 @@ public class InfraService {
         return repository.createBalance(request);
     }
 
-    //====================================== Balance ================================================//
+    public void deleteBalance(Long id){
+        repository.deleteBalanceById(id);
+    }
+
+    //====================================== Antenne ================================================//
 
     public List<AntenneRFID> getAntenne(){
 
@@ -79,6 +92,10 @@ public class InfraService {
     public AntenneRFID createAntenne(AntenneCreationRequest request){
 
         return repository.createAntenne(request);
+    }
+
+    public void deleteAntenne(Long id){
+        repository.deleteAntenneById(id);
     }
 
 
