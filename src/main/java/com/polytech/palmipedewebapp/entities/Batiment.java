@@ -13,6 +13,10 @@ public class Batiment {
         this.name = name;
     }
 
+    public Batiment() {
+
+    }
+
     public void setIdBatiment(Long idBatiment) {
         this.idBatiment = idBatiment;
     }

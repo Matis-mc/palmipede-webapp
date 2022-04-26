@@ -2,17 +2,18 @@ package com.polytech.palmipedewebapp.entities;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Ponte {
 
     @Id
     private Long idPonte;
-    private Date datePonte;
+    private LocalDate datePonte;
     private Long idPalmipede;
     private Long idNid;
 
-    public Ponte(Date datePonte, Long idPalmipede, Long idNid){
+    public Ponte(LocalDate datePonte, Long idPalmipede, Long idNid){
         this.datePonte = datePonte;
         this.idNid = idNid;
         this.idPalmipede = idPalmipede;
@@ -29,11 +30,11 @@ public class Ponte {
         return idPonte;
     }
 
-    public Date getDatePonte() {
+    public LocalDate getDatePonte() {
         return datePonte;
     }
 
-    public void setDatePonte(Date datePonte) {
+    public void setDatePonte(LocalDate datePonte) {
         this.datePonte = datePonte;
     }
 

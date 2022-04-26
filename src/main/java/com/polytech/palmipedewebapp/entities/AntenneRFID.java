@@ -7,6 +7,10 @@ public class AntenneRFID {
     @Id
     private Long idAntenne;
 
+    public void setIdAntenne(Long idAntenne) {
+        this.idAntenne = idAntenne;
+    }
+
     public Long getIdAntenne() {
         return idAntenne;
     }

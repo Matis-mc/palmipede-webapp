@@ -3,10 +3,10 @@ package com.polytech.palmipedewebapp.repository;
 
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.mapper.PalmipedeRowMapper;
+import com.polytech.palmipedewebapp.mapper.PonteRowMapper;
 import com.polytech.palmipedewebapp.requests.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -17,6 +17,7 @@ public class ApplicationRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
     //====================================== Palmipede ================================================//
 
     public List<Palmipede> getPalmipede(){
@@ -33,7 +34,7 @@ public class ApplicationRepository {
     }
 
     public Palmipede createPalmipede(PalmipedeCreationRequest request){
-        int result = jdbcTemplate.update("INSERT INTO palmipede(id_espece) VALUES(?)", request.getIdEspece() );
+        int result = jdbcTemplate.update("INSERT INTO palmipede(id_espece) VALUES(?, ?)", request.getIdEspece(), request.getTagRFID() );
 
         return null;
     }
@@ -41,11 +42,15 @@ public class ApplicationRepository {
     //====================================== Ponte ================================================//
 
     public List<Ponte> getAllPonte(){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM PONTE", new PonteRowMapper());
+
     }
 
     public Ponte getPonteById( Long id){
-        return null;
+
+        return jdbcTemplate.queryForObject("SELECT * FROM PONTE WHERE id_ponte = ?", new Object[]{id}, new PonteRowMapper());
+
     }
 
     public List<Ponte> getPonteByDay(Date date){
@@ -53,18 +58,25 @@ public class ApplicationRepository {
     }
 
     public List<Ponte> getPonteByBatiment(Long idBatiment){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM ponte WHERE id_batiment = ?", new Object[]{idBatiment}, new PonteRowMapper());
+
     }
 
     public List<Ponte> getPonteByNid( Long idNid){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM ponte WHERE id_nid = ?", new Object[]{idNid}, new PonteRowMapper());
+
     }
 
     public List<Ponte> getPonteByPalmipede(Long idPalmipede){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM ponte WHERE id_palmipede = ?", new Object[]{idPalmipede}, new PonteRowMapper());
+
     }
 
     public Ponte createPonte(PonteCreationRequest request){
+        int result = jdbcTemplate.update("INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?)", request.getDatePonte(), request.getIdNid(), request.getIdPalmipede() );
         return null;
     }
 
