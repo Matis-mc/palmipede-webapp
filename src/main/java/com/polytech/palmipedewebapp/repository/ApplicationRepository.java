@@ -2,8 +2,7 @@ package com.polytech.palmipedewebapp.repository;
 
 
 import com.polytech.palmipedewebapp.entities.*;
-import com.polytech.palmipedewebapp.mapper.PalmipedeRowMapper;
-import com.polytech.palmipedewebapp.mapper.PonteRowMapper;
+import com.polytech.palmipedewebapp.mapper.*;
 import com.polytech.palmipedewebapp.requests.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,44 +82,91 @@ public class ApplicationRepository {
     //====================================== Espece ================================================//
 
     public List<Espece> getEspece(){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM ESPECE", new EspeceRowMapper());
+
     }
 
-    public Espece getEspeceById(Long id){return null;}
+    public Espece getEspeceById(Long id){
 
-    public Espece createEspece(EspeceCreationRequest request){return null;}
+        return jdbcTemplate.queryForObject("SELECT * FROM ESPECE WHERE id_espece = ?", new Object[]{id}, new EspeceRowMapper());
+
+    }
+
+    public Espece createEspece(EspeceCreationRequest request){
+        int result = jdbcTemplate.update("INSERT INTO ESPECE(nom, poid_minimal_palmipede, poid_maximal_palmipede, poid_minimal_oeuf, poid_maximal_oeuf) VALUES(?, ?, ?, ?, ?)", request.getName(), request.getPoidMinimalPalmipede(), request.getPoidMaximalPalmipede(), request.getPoidMinimalOeuf(), request.getPoidMaximalOeuf() );
+        return null;}
 
     //====================================== Batiment ================================================//
 
     public List<Batiment> getBatiment(){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM BATIMENT", new BatimentRowMapper());
+
     }
 
-    public Batiment getBatimentById(Long id){return null;}
+    public Batiment getBatimentById(Long id){
 
-    public Batiment createBatiment(BatimentCreationRequest request){return null;}
+        return jdbcTemplate.queryForObject("SELECT * FROM BATIMENT WHERE id_batiment = ?", new Object[]{id}, new BatimentRowMapper());
+
+
+    }
+
+    public Batiment getBatimentByIdEspece(Long id){
+
+        return jdbcTemplate.queryForObject("SELECT * FROM BATIMENT WHERE id_espece = ?", new Object[]{id}, new BatimentRowMapper());
+
+
+    }
+
+    public Batiment createBatiment(BatimentCreationRequest request){
+
+        int result = jdbcTemplate.update("INSERT INTO BATIMENT(nom, id_espece) VALUES(?, ?)", request.getName(), request.getIdEspece());
+
+        return null;}
 
     //====================================== Nid ================================================//
 
     public List<Nid> getNid(){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM NID", new NidRowMapper());
+
     }
 
-    public Nid getNidById(Long id){return null;}
+    public Nid getNidById(Long id){
 
-    public Nid createNid(NidCreationRequest request){return null;}
+        return jdbcTemplate.queryForObject("SELECT * FROM NID WHERE id_nid = ?", new Object[]{id}, new NidRowMapper());
+
+    }
+
+    public Nid createNid(NidCreationRequest request){
+
+        int result = jdbcTemplate.update("INSERT INTO NID(id_antenne, id_balance, id_batiment) VALUES(?, ?, ?)", request.getIdAntenne(), request.getIdBalance(), request.getIdBatiment());
+
+        return null;
+
+    }
 
     //====================================== Balance ================================================//
 
     public List<Balance> getBalance(){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM BALANCE", new BalanceRowMapper());
     }
 
-    public Balance getBalanceById(Long id){return null;}
+    public Balance getBalanceById(Long id){
 
-    public Balance createBalance(BalanceCreationRequest request){return null;}
+        return jdbcTemplate.queryForObject("SELECT * FROM BALANCE WHERE id_balance = ?", new Object[]{id}, new BalanceRowMapper());
 
-    //====================================== Balance ================================================//
+    }
+
+    public Balance createBalance(BalanceCreationRequest request){
+        int result = jdbcTemplate.update("INSERT INTO BALANCE");
+        return null;
+
+    }
+
+    //====================================== Antenne ================================================//
 
     public List<AntenneRFID> getAntenne(){
         return null;
