@@ -18,6 +18,13 @@ public class Ponte {
         this.idPalmipede = idPalmipede;
     }
 
+    public Ponte() {
+    }
+
+    public void setIdPonte(Long idPonte) {
+        this.idPonte = idPonte;
+    }
+
     public Long getIdPonte() {
         return idPonte;
     }

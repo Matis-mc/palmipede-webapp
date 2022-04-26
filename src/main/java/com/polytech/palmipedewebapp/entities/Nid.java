@@ -20,6 +20,14 @@ public class Nid {
         this.idBatiment = idBatiment;
     }
 
+    public Nid() {
+
+    }
+
+    public void setIdNid(Long idNid) {
+        this.idNid = idNid;
+    }
+
     public Long getIdNid() {
         return idNid;
     }
