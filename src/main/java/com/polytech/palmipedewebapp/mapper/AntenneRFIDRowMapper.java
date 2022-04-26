@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AnntenneRFIDRowMapper implements RowMapper<AntenneRFID> {
+public class AntenneRFIDRowMapper implements RowMapper<AntenneRFID> {
     @Override
     public AntenneRFID mapRow(ResultSet rs, int rowNum) throws SQLException {
         AntenneRFID antenne = new AntenneRFID();

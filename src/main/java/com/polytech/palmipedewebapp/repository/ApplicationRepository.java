@@ -169,12 +169,19 @@ public class ApplicationRepository {
     //====================================== Antenne ================================================//
 
     public List<AntenneRFID> getAntenne(){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM ANTENNE", new AntenneRFIDRowMapper() );
+
     }
 
-    public AntenneRFID getAntenneById(Long id){return null;}
+    public AntenneRFID getAntenneById(Long id){
+        return jdbcTemplate.queryForObject("SELECT * FROM ANTENNE_RFID WHERE id_antenne_rfid = ?", new Object[]{id}, new AntenneRFIDRowMapper());
+    }
 
-    public AntenneRFID createAntenne(AntenneCreationRequest request){return null;}
+    public AntenneRFID createAntenne(AntenneCreationRequest request){
+        int result = jdbcTemplate.update("INSERT INTO ANTENNE_RFID");
+        return null;
+    }
 
 
 }
