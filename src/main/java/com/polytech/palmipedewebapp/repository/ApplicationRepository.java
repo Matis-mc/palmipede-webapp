@@ -4,8 +4,13 @@ package com.polytech.palmipedewebapp.repository;
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.mapper.*;
 import com.polytech.palmipedewebapp.requests.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -13,6 +18,8 @@ import java.util.List;
 
 @Repository
 public class ApplicationRepository {
+
+    Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -33,8 +40,10 @@ public class ApplicationRepository {
     }
 
     public Palmipede createPalmipede(PalmipedeCreationRequest request){
-        int result = jdbcTemplate.update("INSERT INTO palmipede(id_espece) VALUES(?, ?)", request.getIdEspece(), request.getTagRFID() );
+       // KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        int result = jdbcTemplate.update("INSERT INTO palmipede(id_espece, tag_rfid) VALUES(?, ?)", request.getIdEspece(), request.getTagRFID());
+        //LOGGER.info("id", keyHolder.getKey());
         return null;
     }
 
