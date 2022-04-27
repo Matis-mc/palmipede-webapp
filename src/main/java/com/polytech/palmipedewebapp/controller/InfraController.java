@@ -51,11 +51,11 @@ public class InfraController {
     public ResponseEntity<Nid> createNid(
             @RequestBody NidCreationRequest request
     ) throws URISyntaxException {
-        Nid NidCreated = service.createNid(request);
-        URI uri = new URI(nidURL + NidCreated.getIdNid());
+        Long id = service.createNid(request);
+        URI uri = new URI(nidURL + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ok().headers(headers).body(NidCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/nid/{idNid}")
@@ -83,11 +83,11 @@ public class InfraController {
     public ResponseEntity<Balance> createBalance(
             @RequestBody BalanceCreationRequest request
     ) throws URISyntaxException {
-        Balance BalanceCreated = service.createBalance(request);
-        URI uri = new URI(balanceURL + BalanceCreated.getIdbalance());
+        Long id = service.createBalance(request);
+        URI uri = new URI(balanceURL + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ok().headers(headers).body(BalanceCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/balance/{idBalance}")
@@ -116,11 +116,11 @@ public class InfraController {
             @RequestBody AntenneCreationRequest request
     ) throws URISyntaxException {
         LOGGER.info(request.toString());
-        AntenneRFID AntenneCreated = service.createAntenne(request);
-        URI uri = new URI(antenneURL + AntenneCreated.getIdAntenne());
+        Long id = service.createAntenne(request);
+        URI uri = new URI(antenneURL + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ok().headers(headers).body(AntenneCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/antenne/{idAntenne}")
@@ -148,11 +148,11 @@ public class InfraController {
     public ResponseEntity<Batiment> createBatiment(
             @RequestBody BatimentCreationRequest request
     ) throws URISyntaxException {
-        Batiment batimentCreated = service.createBatiment(request);
-        URI uri = new URI(batimentURL + batimentCreated.getIdBatiment());
+        Long id = service.createBatiment(request);
+        URI uri = new URI(batimentURL + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ok().headers(headers).body(batimentCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/batiment/{idBatiment}")

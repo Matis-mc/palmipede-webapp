@@ -29,7 +29,7 @@ public class InfraService {
         return repository.getBatimentById(id);
     }
 
-    public Batiment createBatiment(BatimentCreationRequest request){
+    public Long createBatiment(BatimentCreationRequest request){
         return repository.createBatiment(request);
     }
 
@@ -48,7 +48,7 @@ public class InfraService {
         return repository.getNidById(id);
     }
 
-    public Nid createNid(NidCreationRequest request){
+    public Long createNid(NidCreationRequest request){
         return repository.createNid(request);
     }
 
@@ -68,7 +68,7 @@ public class InfraService {
         return repository.getBalanceById(id);
     }
 
-    public Balance createBalance(BalanceCreationRequest request){
+    public Long createBalance(BalanceCreationRequest request){
 
         return repository.createBalance(request);
     }
@@ -89,7 +89,7 @@ public class InfraService {
         return repository.getAntenneById(id);
     }
 
-    public AntenneRFID createAntenne(AntenneCreationRequest request){
+    public Long createAntenne(AntenneCreationRequest request){
 
         return repository.createAntenne(request);
     }

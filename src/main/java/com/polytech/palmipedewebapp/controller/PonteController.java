@@ -73,11 +73,11 @@ public class PonteController {
             @RequestBody PonteCreationRequest request
             ) throws URISyntaxException {
         LOGGER.info(request.toString());
-        Ponte ponteCreated = service.createPonte(request);
-        URI uri = new URI(ponteURL + ponteCreated.getIdPalmipede());
+        Long id = service.createPonte(request);
+        URI uri = new URI(ponteURL + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(ponteCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/ponte/{idPonte}")

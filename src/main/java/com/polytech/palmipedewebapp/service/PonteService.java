@@ -42,7 +42,7 @@ public class PonteService {
         return repository.getPonteByPalmipede(idPalmipede);
     }
 
-    public Ponte createPonte(PonteCreationRequest request){
+    public Long createPonte(PonteCreationRequest request){
         return repository.createPonte(request);
     }
 

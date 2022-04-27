@@ -97,9 +97,23 @@ public class ApplicationRepository {
 
     }
 
-    public Ponte createPonte(PonteCreationRequest request){
-        int result = jdbcTemplate.update("INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?)", request.getDatePonte(), request.getIdNid(), request.getIdPalmipede() );
-        return null;
+    public Long createPonte(PonteCreationRequest request){
+        //int result = jdbcTemplate.update("INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?)", request.getDatePonte(), request.getIdNid(), request.getIdPalmipede() );
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?, ?)", new String[]{"id_ponte"});
+            ps.setString(1, request.getDatePonte().toString());
+            ps.setLong(2, request.getIdNid());
+            ps.setLong(3, request.getIdPalmipede());
+
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
+
     }
 
     public int deletePonteById(Long id){
@@ -165,11 +179,22 @@ public class ApplicationRepository {
 
     }
 
-    public Batiment createBatiment(BatimentCreationRequest request){
+    public Long createBatiment(BatimentCreationRequest request){
 
-        int result = jdbcTemplate.update("INSERT INTO BATIMENT(nom, id_espece) VALUES(?, ?)", request.getName(), request.getIdEspece());
+        //int result = jdbcTemplate.update("INSERT INTO BATIMENT(nom, id_espece) VALUES(?, ?)", request.getName(), request.getIdEspece());
 
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO BATIMENT(nom, id_espece) VALUES(?, ?)", new String[]{"id_batiment"});
+            ps.setString(1, request.getName());
+            ps.setLong(2,request.getIdEspece());
+
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
     }
 
     public int deleteBatimentById(Long id){
@@ -191,12 +216,23 @@ public class ApplicationRepository {
 
     }
 
-    public Nid createNid(NidCreationRequest request){
+    public Long createNid(NidCreationRequest request){
 
-        int result = jdbcTemplate.update("INSERT INTO NID(id_antenne, id_balance, id_batiment) VALUES(?, ?, ?)", request.getIdAntenne(), request.getIdBalance(), request.getIdBatiment());
+        //int result = jdbcTemplate.update("INSERT INTO NID(id_antenne, id_balance, id_batiment) VALUES(?, ?, ?)", request.getIdAntenne(), request.getIdBalance(), request.getIdBatiment());
 
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO NID(id_antenne, id_balance, id_batiment) VALUES(?, ?, ?)", new String[]{"id_nid"});
+            ps.setLong(1, request.getIdAntenne());
+            ps.setLong(2,request.getIdBalance());
+            ps.setLong(3, request.getIdBatiment());
+
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
     }
 
     public int deleteNidById(Long id){
@@ -217,10 +253,20 @@ public class ApplicationRepository {
 
     }
 
-    public Balance createBalance(BalanceCreationRequest request){
-        int result = jdbcTemplate.update("INSERT INTO BALANCE");
-        return null;
+    public Long createBalance(BalanceCreationRequest request){
+        //int result = jdbcTemplate.update("INSERT INTO BALANCE");
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO BALANCE", new String[]{"id_nid"});
+
+
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
     }
 
     public int deleteBalanceById(Long id){
@@ -241,9 +287,21 @@ public class ApplicationRepository {
         return jdbcTemplate.queryForObject("SELECT * FROM ANTENNE_RFID WHERE id_antenne_rfid = ?", new Object[]{id}, new AntenneRFIDRowMapper());
     }
 
-    public AntenneRFID createAntenne(AntenneCreationRequest request){
-        int result = jdbcTemplate.update("INSERT INTO ANTENNE_RFID");
-        return null;
+    public Long createAntenne(AntenneCreationRequest request){
+        //int result = jdbcTemplate.update("INSERT INTO ANTENNE_RFID");
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO ANTENNE_RFID", new String[]{"id_nid"});
+
+
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
+
     }
 
     public int deleteAntenneById(Long id){
