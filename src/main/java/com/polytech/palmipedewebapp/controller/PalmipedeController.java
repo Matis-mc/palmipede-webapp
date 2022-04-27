@@ -27,7 +27,7 @@ public class PalmipedeController {
     Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private String palmipedeURL = "palmipede/";
-    private String especeUrl = "url/";
+    private String especeUrl = "palmipede/espece/";
 
     @Autowired
     private PalmipedeService service;

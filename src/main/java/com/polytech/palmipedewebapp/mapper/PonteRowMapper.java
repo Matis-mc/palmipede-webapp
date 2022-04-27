@@ -13,7 +13,7 @@ public class PonteRowMapper implements RowMapper<Ponte> {
     @Override
     public Ponte mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-mm-yyyy");
         Ponte ponte = new Ponte();
 
         ponte.setIdPonte(rs.getLong("id_ponte"));

@@ -81,7 +81,7 @@ public class ApplicationRepository {
 
     public List<Ponte> getPonteByBatiment(Long idBatiment){
 
-        return jdbcTemplate.query("SELECT * FROM ponte WHERE id_batiment = ?", new Object[]{idBatiment}, new PonteRowMapper());
+        return jdbcTemplate.query("SELECT * FROM ponte JOIN nid ON ponte.id_nid = nid.id_nid WHERE nid.id_batiment = ?", new Object[]{idBatiment}, new PonteRowMapper());
 
     }
 
@@ -141,7 +141,7 @@ public class ApplicationRepository {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO ESPECE(nom, poid_minimal_palmipede, poid_maximal_palmipede, poid_minimal_oeuf, poid_maximal_oeuf) VALUES(?, ?, ?, ?, ?)", new String[]{"id_espece"});
-            ps.setString(2,request.getName());
+            ps.setString(1,request.getName());
             ps.setFloat(2, request.getPoidMinimalPalmipede() );
             ps.setFloat(3, request.getPoidMaximalPalmipede());
             ps.setFloat(4, request.getPoidMinimalOeuf());
@@ -279,7 +279,7 @@ public class ApplicationRepository {
 
     public List<AntenneRFID> getAntenne(){
 
-        return jdbcTemplate.query("SELECT * FROM ANTENNE", new AntenneRFIDRowMapper() );
+        return jdbcTemplate.query("SELECT * FROM ANTENNE_RFID", new AntenneRFIDRowMapper() );
 
     }
 
@@ -305,7 +305,7 @@ public class ApplicationRepository {
     }
 
     public int deleteAntenneById(Long id){
-        return jdbcTemplate.update("DELETE FROM ANTENNE WHERE id_antenne = ?", new Object[]{id});
+        return jdbcTemplate.update("DELETE FROM ANTENNE_RFID WHERE id_antenne_rfid = ?", new Object[]{id});
 
     }
 

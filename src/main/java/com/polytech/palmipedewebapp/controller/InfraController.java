@@ -40,7 +40,7 @@ public class InfraController {
         return new ResponseEntity(service.getNid(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idNid}")
+    @GetMapping("/nid/{idNid}")
     public ResponseEntity<Nid> getNid(
             @PathVariable Long idNid
     ){
@@ -72,7 +72,7 @@ public class InfraController {
         return new ResponseEntity(service.getBalance(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idBalance}")
+    @GetMapping("/balance/{idBalance}")
     public ResponseEntity<Balance> getBalance(
             @PathVariable Long idBalance
     ){
@@ -104,7 +104,7 @@ public class InfraController {
         return new ResponseEntity(service.getAntenne(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idantenne}")
+    @GetMapping("/antenne/{idAntenne}")
     public ResponseEntity<AntenneRFID> getAntenne(
             @PathVariable Long idAntenne
     ){
@@ -137,7 +137,7 @@ public class InfraController {
         return new ResponseEntity(service.getAllBatiment(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idBatiment}")
+    @GetMapping("/batiment/{idBatiment}")
     public ResponseEntity<Batiment> getBatiment(
             @PathVariable Long idBatiment
     ){
