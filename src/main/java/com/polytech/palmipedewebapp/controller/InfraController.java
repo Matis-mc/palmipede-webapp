@@ -3,7 +3,6 @@ package com.polytech.palmipedewebapp.controller;
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.requests.*;
 import com.polytech.palmipedewebapp.service.InfraService;
-import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -58,6 +58,7 @@ public class InfraController {
         return ok().headers(headers).body(NidCreated);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/nid/{idNid}")
     public void deleteNid(
             @PathVariable Long idNid
@@ -90,6 +91,7 @@ public class InfraController {
         return ok().headers(headers).body(BalanceCreated);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/balance/{idBalance}")
     public void deleteBalance(
             @PathVariable Long idBalance
@@ -123,6 +125,7 @@ public class InfraController {
         return ok().headers(headers).body(AntenneCreated);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/antenne/{idAntenne}")
     public void deleteAntenne(
             @PathVariable Long idAntenne
@@ -155,6 +158,7 @@ public class InfraController {
         return ok().headers(headers).body(batimentCreated);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/batiment/{idBatiment}")
     public void deleteBatiment(
             @PathVariable Long idBatiment

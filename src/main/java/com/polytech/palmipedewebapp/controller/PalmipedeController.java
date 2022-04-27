@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -73,6 +74,7 @@ public class PalmipedeController {
         return ResponseEntity.ok().headers(headers).body(palmipedeCreated);
     }
 
+    @RolesAllowed("ADMIN")
     @PostMapping("/espece")
     public ResponseEntity<Espece> createEspece(
             @RequestBody EspeceCreationRequest request
@@ -92,6 +94,7 @@ public class PalmipedeController {
         service.deletePalmipede(idPalmipede);
     }
 
+    @RolesAllowed("ADMIN")
     @DeleteMapping("/espece/{idEspece}")
     public void deleteNid(
             @PathVariable Long idEspece

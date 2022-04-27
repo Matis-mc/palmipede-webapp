@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -80,6 +81,7 @@ public class PonteController {
         return ResponseEntity.ok().headers(headers).body(ponteCreated);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/ponte/{idPonte}")
     public void deletePonte(
             @PathVariable Long idPonte
