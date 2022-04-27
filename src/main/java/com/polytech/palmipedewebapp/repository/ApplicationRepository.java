@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class ApplicationRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //====================================== Palmipede ================================================//
+
+     //====================================== Palmipede ================================================//
 
     public List<Palmipede> getPalmipede(){
          return jdbcTemplate.query("SELECT * FROM palmipede", new PalmipedeRowMapper());
@@ -39,12 +41,20 @@ public class ApplicationRepository {
 
     }
 
-    public Palmipede createPalmipede(PalmipedeCreationRequest request){
-       // KeyHolder keyHolder = new GeneratedKeyHolder();
+    public Long createPalmipede(PalmipedeCreationRequest request){
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        int result = jdbcTemplate.update("INSERT INTO palmipede(id_espece, tag_rfid) VALUES(?, ?)", request.getIdEspece(), request.getTagRFID());
-        //LOGGER.info("id", keyHolder.getKey());
-        return null;
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+            "INSERT INTO palmipede(id_espece, tag_rfid) VALUES(?, ?)", new String[]{"id_palmipede"});
+            ps.setLong(1, request.getIdEspece());
+            ps.setString(2, request.getTagRFID());
+
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
+
     }
 
     public int deletePalmipedeById(Long id){
@@ -110,9 +120,22 @@ public class ApplicationRepository {
 
     }
 
-    public Espece createEspece(EspeceCreationRequest request){
-        int result = jdbcTemplate.update("INSERT INTO ESPECE(nom, poid_minimal_palmipede, poid_maximal_palmipede, poid_minimal_oeuf, poid_maximal_oeuf) VALUES(?, ?, ?, ?, ?)", request.getName(), request.getPoidMinimalPalmipede(), request.getPoidMaximalPalmipede(), request.getPoidMinimalOeuf(), request.getPoidMaximalOeuf() );
-        return null;
+    public Long createEspece(EspeceCreationRequest request){
+        //int result = jdbcTemplate.update("INSERT INTO ESPECE(nom, poid_minimal_palmipede, poid_maximal_palmipede, poid_minimal_oeuf, poid_maximal_oeuf) VALUES(?, ?, ?, ?, ?)", request.getName(), request.getPoidMinimalPalmipede(), request.getPoidMaximalPalmipede(), request.getPoidMinimalOeuf(), request.getPoidMaximalOeuf() );
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    "INSERT INTO ESPECE(nom, poid_minimal_palmipede, poid_maximal_palmipede, poid_minimal_oeuf, poid_maximal_oeuf) VALUES(?, ?, ?, ?, ?)", new String[]{"id_espece"});
+            ps.setString(2,request.getName());
+            ps.setFloat(2, request.getPoidMinimalPalmipede() );
+            ps.setFloat(3, request.getPoidMaximalPalmipede());
+            ps.setFloat(4, request.getPoidMinimalOeuf());
+            ps.setFloat(5, request.getPoidMaximalOeuf());
+            return ps;
+        }, keyHolder );
+
+        return keyHolder.getKey().longValue();
     }
 
     public int deleteEspeceById(Long id){

@@ -62,15 +62,15 @@ public class PalmipedeController {
     }
 
     @PostMapping()
-    public ResponseEntity<Palmipede> createPalmipede(
+    public ResponseEntity<?> createPalmipede(
             @RequestBody PalmipedeCreationRequest request
             ) throws URISyntaxException {
         LOGGER.info(request.toString());
-        Palmipede palmipedeCreated = service.createPalmipede(request);
-        URI uri = new URI(palmipedeURL + palmipedeCreated.getIdPalmipede());
+        Long id = service.createPalmipede(request);
+        URI uri = new URI(palmipedeURL + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(palmipedeCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @PostMapping("/espece")
@@ -78,11 +78,11 @@ public class PalmipedeController {
             @RequestBody EspeceCreationRequest request
             ) throws URISyntaxException {
         LOGGER.info(request.toString());
-        Espece especeCreated = service.createEspece(request);
-        URI uri = new URI(especeUrl + especeCreated.getIdEspece());
+        Long id = service.createEspece(request);
+        URI uri = new URI(especeUrl + id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
-        return ResponseEntity.ok().headers(headers).body(especeCreated);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/palmipede/{idPalmipede}")

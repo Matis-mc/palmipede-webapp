@@ -57,11 +57,11 @@ public class PalmipedeService {
         return repository.getPalmipede();
     }
 
-    public Palmipede createPalmipede(PalmipedeCreationRequest request){
+    public Long createPalmipede(PalmipedeCreationRequest request){
         return repository.createPalmipede(request);
     }
 
-    public Espece createEspece(EspeceCreationRequest request){
+    public Long createEspece(EspeceCreationRequest request){
         return repository.createEspece(request);
     }
 
