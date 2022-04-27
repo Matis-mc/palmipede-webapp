@@ -85,5 +85,18 @@ public class PalmipedeController {
         return ResponseEntity.ok().headers(headers).body(especeCreated);
     }
 
-    //TODO delete
+    @DeleteMapping("/palmipede/{idPalmipede}")
+    public void deletePalmipede(
+            @PathVariable Long idPalmipede
+    ){
+        service.deletePalmipede(idPalmipede);
+    }
+
+    @DeleteMapping("/espece/{idEspece}")
+    public void deleteNid(
+            @PathVariable Long idEspece
+    ){
+        service.deleteEspece(idEspece);
+    }
+
 }

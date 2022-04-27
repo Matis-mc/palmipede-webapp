@@ -80,4 +80,11 @@ public class PonteController {
         return ResponseEntity.ok().headers(headers).body(ponteCreated);
     }
 
+    @DeleteMapping("/ponte/{idPonte}")
+    public void deletePonte(
+            @PathVariable Long idPonte
+    ){
+        service.deletePonte(idPonte);
+    }
+
 }

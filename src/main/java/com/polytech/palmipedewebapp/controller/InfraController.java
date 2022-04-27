@@ -90,6 +90,13 @@ public class InfraController {
         return ok().headers(headers).body(BalanceCreated);
     }
 
+    @DeleteMapping("/balance/{idBalance}")
+    public void deleteBalance(
+            @PathVariable Long idBalance
+    ){
+        service.deleteBalance(idBalance);
+    }
+
     //====================================== Antenne ================================================//
 
     @GetMapping("/antenne")
@@ -116,6 +123,13 @@ public class InfraController {
         return ok().headers(headers).body(AntenneCreated);
     }
 
+    @DeleteMapping("/antenne/{idAntenne}")
+    public void deleteAntenne(
+            @PathVariable Long idAntenne
+    ){
+        service.deleteAntenne(idAntenne);
+    }
+
     //====================================== Batiment ================================================//
 
     @GetMapping("/Batiment")
@@ -139,5 +153,12 @@ public class InfraController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
         return ok().headers(headers).body(batimentCreated);
+    }
+
+    @DeleteMapping("/batiment/{idBatiment}")
+    public void deleteBatiment(
+            @PathVariable Long idBatiment
+    ){
+        service.deleteBatiment(idBatiment);
     }
 }
