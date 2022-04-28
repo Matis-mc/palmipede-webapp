@@ -7,13 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class PonteRowMapper implements RowMapper<Ponte> {
     @Override
     public Ponte mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-mm-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Ponte ponte = new Ponte();
 
         ponte.setIdPonte(rs.getLong("id_ponte"));
