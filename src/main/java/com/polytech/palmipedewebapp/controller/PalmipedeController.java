@@ -8,8 +8,6 @@ import com.polytech.palmipedewebapp.service.PalmipedeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @Controller
@@ -86,17 +85,28 @@ public class PalmipedeController {
     }
 
     @DeleteMapping("/palmipede/{idPalmipede}")
-    public void deletePalmipede(
+    public ResponseEntity<?> deletePalmipede(
             @PathVariable Long idPalmipede
     ){
-        service.deletePalmipede(idPalmipede);
+        int nbrow = service.deletePalmipede(idPalmipede);
+        if(nbrow > 0){
+            return new ResponseEntity<>("Palmipede deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Palmipede not deleted",HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/espece/{idEspece}")
-    public void deleteNid(
+    public ResponseEntity<?> deleteNid(
             @PathVariable Long idEspece
     ){
-        service.deleteEspece(idEspece);
+        int nbrow = service.deleteEspece(idEspece);
+
+        if(nbrow > 0){
+            return new ResponseEntity<>("Espece deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Espece not deleted",HttpStatus.NOT_FOUND);
+        }
     }
 
 }

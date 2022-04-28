@@ -81,10 +81,16 @@ public class PonteController {
     }
 
     @DeleteMapping("/ponte/{idPonte}")
-    public void deletePonte(
+    public ResponseEntity<?> deletePonte(
             @PathVariable Long idPonte
     ){
-        service.deletePonte(idPonte);
+        int nbRow = service.deletePonte(idPonte);
+
+        if(nbRow > 0){
+            return new ResponseEntity<>("Ponte deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Ponte not deleted",HttpStatus.NOT_FOUND);
+        }
     }
 
 }

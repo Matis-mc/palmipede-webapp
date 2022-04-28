@@ -65,11 +65,11 @@ public class PalmipedeService {
         return repository.createEspece(request);
     }
 
-    public void deletePalmipede(Long id){
-        repository.deletePalmipedeById(id);
+    public int deletePalmipede(Long id){
+        return repository.deletePalmipedeById(id);
     }
-    public void deleteEspece(Long id){
-        repository.deleteEspeceById(id);
+    public int deleteEspece(Long id){
+        return repository.deleteEspeceById(id);
     }
 
 }

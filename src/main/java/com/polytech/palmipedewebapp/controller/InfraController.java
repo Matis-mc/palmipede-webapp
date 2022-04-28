@@ -3,7 +3,6 @@ package com.polytech.palmipedewebapp.controller;
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.requests.*;
 import com.polytech.palmipedewebapp.service.InfraService;
-import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
 @RequestMapping("infra")
@@ -59,10 +57,15 @@ public class InfraController {
     }
 
     @DeleteMapping("/nid/{idNid}")
-    public void deleteNid(
+    public ResponseEntity<?> deleteNid(
             @PathVariable Long idNid
     ){
-        service.deleteNid(idNid);
+        int nbRow = service.deleteNid(idNid);
+        if(nbRow > 0){
+            return new ResponseEntity<>("Nid deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Nid not deleted",HttpStatus.NOT_FOUND);
+        }
     }
 
     //====================================== Balance ================================================//
@@ -91,11 +94,17 @@ public class InfraController {
     }
 
     @DeleteMapping("/balance/{idBalance}")
-    public void deleteBalance(
+    public ResponseEntity<?> deleteBalance(
             @PathVariable Long idBalance
     ){
-        service.deleteBalance(idBalance);
+        int nbRow = service.deleteBalance(idBalance);
+        if(nbRow > 0){
+            return new ResponseEntity<>("Balance deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Balance not deleted",HttpStatus.NOT_FOUND);
+        }
     }
+
 
     //====================================== Antenne ================================================//
 
@@ -124,10 +133,15 @@ public class InfraController {
     }
 
     @DeleteMapping("/antenne/{idAntenne}")
-    public void deleteAntenne(
+    public ResponseEntity<?> deleteAntenne(
             @PathVariable Long idAntenne
     ){
-        service.deleteAntenne(idAntenne);
+        int nbRow = service.deleteAntenne(idAntenne);
+        if(nbRow > 0){
+            return new ResponseEntity<>("Antenne deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Antenne not deleted",HttpStatus.NOT_FOUND);
+        }
     }
 
     //====================================== Batiment ================================================//
@@ -156,9 +170,15 @@ public class InfraController {
     }
 
     @DeleteMapping("/batiment/{idBatiment}")
-    public void deleteBatiment(
+    public ResponseEntity<?> deleteBatiment(
             @PathVariable Long idBatiment
     ){
-        service.deleteBatiment(idBatiment);
+        int nbRow = service.deleteBatiment(idBatiment);
+        if(nbRow > 0){
+            return new ResponseEntity<>("Batiment deleted",HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Batiment not deleted",HttpStatus.NOT_FOUND);
+        }
     }
-}
+    }
+
