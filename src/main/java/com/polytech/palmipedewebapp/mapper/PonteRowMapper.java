@@ -16,7 +16,8 @@ public class PonteRowMapper implements RowMapper<Ponte> {
         Ponte ponte = new Ponte();
 
         ponte.setIdPonte(rs.getLong("id_ponte"));
-        ponte.setDatePonte(LocalDate.parse(rs.getString("date"),formatter));
+        //ponte.setDatePonte(LocalDate.parse(rs.getString("date"),formatter));
+        ponte.setDatePonte(rs.getDate("date"));
         ponte.setIdNid(rs.getLong("id_nid"));
         ponte.setIdPalmipede(rs.getLong("id_palmipede"));
 

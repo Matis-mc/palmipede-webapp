@@ -10,7 +10,7 @@ INSERT INTO PALMIPEDE(id_palmipede, id_espece, tag_rfid)VALUES( 3, 0, '3215');
 
 CREATE TABLE PONTE(
     id_ponte INT PRIMARY KEY AUTO_INCREMENT,
-    date VARCHAR,
+    date DATE,
     id_nid INT NOT NULL,
     id_palmipede INT NOT NULL
 );

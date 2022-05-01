@@ -1,19 +1,19 @@
 package com.polytech.palmipedewebapp.requests;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class PonteCreationRequest {
 
-    private LocalDate datePonte;
+    private Date datePonte;
     private Long idPalmipede;
     private Long idNid;
 
-    public LocalDate getDatePonte() {
+    public Date getDatePonte() {
         return datePonte;
     }
 
-    public void setDatePonte(LocalDate datePonte) {
+    public void setDatePonte(Date datePonte) {
         this.datePonte = datePonte;
     }
 

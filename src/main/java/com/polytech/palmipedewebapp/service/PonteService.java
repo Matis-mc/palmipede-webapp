@@ -7,7 +7,9 @@ import com.polytech.palmipedewebapp.requests.PonteCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -24,9 +26,11 @@ public class PonteService {
         return repository.getPonteById(id);
     }
 
-    public List<Ponte> getPonteByDay(Date date){
-        return
-                repository.getPonteByDay(date);
+    public List<Ponte> getPonteByDay(String dateInString){
+
+        Date date = Date.valueOf(dateInString);
+
+        return repository.getPonteByDay(date);
     }
 
     public List<Ponte> getPonteByBatiment(Long idBatiment){

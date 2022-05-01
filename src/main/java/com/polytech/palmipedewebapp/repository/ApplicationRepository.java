@@ -13,8 +13,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.util.Date;
+
 import java.util.List;
 
 @Repository
@@ -76,7 +77,9 @@ public class ApplicationRepository {
     }
 
     public List<Ponte> getPonteByDay(Date date){
-        return null;
+
+        return jdbcTemplate.query("SELECT * FROM ponte WHERE date = ?", new Object[]{date}, new PonteRowMapper());
+
     }
 
     public List<Ponte> getPonteByBatiment(Long idBatiment){
@@ -105,7 +108,7 @@ public class ApplicationRepository {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?, ?)", new String[]{"id_ponte"});
-            ps.setString(1, request.getDatePonte().toString());
+            ps.setDate(1, request.getDatePonte());
             ps.setLong(2, request.getIdNid());
             ps.setLong(3, request.getIdPalmipede());
 

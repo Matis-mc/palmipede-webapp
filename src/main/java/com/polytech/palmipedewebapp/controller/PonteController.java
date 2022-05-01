@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -42,10 +43,16 @@ public class PonteController {
     }
 
     @GetMapping("/date/{date}")
-    public ResponseEntity<List<Ponte>> getPontesByDate(
-            @PathVariable Date date
+    public ResponseEntity<?> getPontesByDate(
+            @PathVariable String date
     ){
-        return new ResponseEntity(service.getPonteByDay(date), HttpStatus.OK);
+        try {
+            return new ResponseEntity(service.getPonteByDay(date), HttpStatus.OK);
+       }catch (IllegalArgumentException e) {
+            String errMsg = "Error while parsing date, be sure to use the following format : yyyy - MM - dd   Trace : ";
+            return new ResponseEntity<>( errMsg + e.getStackTrace(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping("/nid/{idNid}")
