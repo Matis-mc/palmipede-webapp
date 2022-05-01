@@ -20,6 +20,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 @RequestMapping("palmipede")
 public class PalmipedeController {
 

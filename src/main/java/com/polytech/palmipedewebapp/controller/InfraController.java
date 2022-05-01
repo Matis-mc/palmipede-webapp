@@ -18,6 +18,7 @@ import java.util.List;
 
 
 @Controller
+@CrossOrigin
 @RequestMapping("infra")
 public class InfraController {
 

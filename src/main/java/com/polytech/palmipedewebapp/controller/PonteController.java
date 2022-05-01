@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 @RequestMapping("ponte")
 public class PonteController {
 
