@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -56,6 +55,12 @@ public class ApplicationRepository {
 
         return keyHolder.getKey().longValue();
 
+    }
+
+    public int updatePalmipede(PalmipedeCreationRequest request, long idPalmipede){
+
+        return jdbcTemplate.update("UPDATE palmipede SET id_espece = ?, tag_rfid = ? WHERE id_palmipede = ?;",
+                request.getIdEspece(), request.getTagRFID(), idPalmipede);
     }
 
     public int deletePalmipedeById(Long id){
@@ -119,6 +124,11 @@ public class ApplicationRepository {
 
     }
 
+    public int updatePonte(PonteCreationRequest request, long idPonte){
+        return jdbcTemplate.update("UPDATE ponte SET date = ?, id_nid = ?, id_palmipede = ? WHERE id_ponte = ?;",
+                request.getDatePonte(), request.getIdNid(), request.getIdPalmipede(), idPonte);
+    }
+
     public int deletePonteById(Long id){
         return jdbcTemplate.update("DELETE FROM PONTE WHERE id_ponte = ?", new Object[]{id});
     }
@@ -158,6 +168,13 @@ public class ApplicationRepository {
     public int deleteEspeceById(Long id){
         return jdbcTemplate.update("DELETE FROM ESPECE WHERE id_espece = ?", new Object[]{id});
 
+    }
+
+    public int updateEspece(EspeceCreationRequest request, long idEspece){
+
+        return jdbcTemplate.update("UPDATE espece SET nom = ?, poid_minimal_palmipede = ?, " +
+                        "poid_maximal_palmipede = ?, poid_minimal_oeuf = ?, poid_maximal_oeuf = ? WHERE id_espece = ?;",request.getName(),
+                request.getPoidMinimalPalmipede(), request.getPoidMaximalPalmipede(), request.getPoidMinimalOeuf(), request.getPoidMaximalOeuf(), idEspece);
     }
 
     //====================================== Batiment ================================================//
@@ -200,6 +217,13 @@ public class ApplicationRepository {
         return keyHolder.getKey().longValue();
     }
 
+    public int updateBatiment(BatimentCreationRequest request, long idBatiment){
+
+        return jdbcTemplate.update("UPDATE batiment SET nom = ?, id_espece = ? " +
+                        " WHERE id_batiment = ?;", request.getName(),
+                request.getIdEspece(), idBatiment);
+    }
+
     public int deleteBatimentById(Long id){
         return jdbcTemplate.update("DELETE FROM BATIMENT WHERE id_batiment = ?", new Object[]{id});
 
@@ -236,6 +260,12 @@ public class ApplicationRepository {
         }, keyHolder );
 
         return keyHolder.getKey().longValue();
+    }
+
+    public int updateNid(NidCreationRequest request, long idNid){
+
+        return jdbcTemplate.update("UPDATE nid SET id_antenne = ?, id_balance = ?, id_batiment = ? " +
+                        " WHERE id_nid = ?;", request.getIdAntenne(), request.getIdBalance(), request.getIdBatiment(), idNid);
     }
 
     public int deleteNidById(Long id){

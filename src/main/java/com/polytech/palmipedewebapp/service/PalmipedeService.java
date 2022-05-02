@@ -65,9 +65,28 @@ public class PalmipedeService {
         return repository.createEspece(request);
     }
 
+    public Palmipede updatePalmipede(PalmipedeCreationRequest request, long id){
+        int result = repository.updatePalmipede(request, id);
+        if(result > 0) {
+            return repository.getPalmipedeById(id);
+        }else{
+            throw new RuntimeException("une erreur est survenue durant l'update");
+        }
+    }
+
+    public Espece updateEspece(EspeceCreationRequest request, long id){
+        int result = repository.updateEspece(request, id);
+        if(result > 0) {
+            return repository.getEspeceById(id);
+        }else{
+            throw new RuntimeException("une erreur est survenue durant l'update");
+        }
+    }
+
     public int deletePalmipede(Long id){
         return repository.deletePalmipedeById(id);
     }
+
     public int deleteEspece(Long id){
         return repository.deleteEspeceById(id);
     }

@@ -1,6 +1,8 @@
 package com.polytech.palmipedewebapp.controller;
 
+import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.entities.Ponte;
+import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import com.polytech.palmipedewebapp.requests.PonteCreationRequest;
 import com.polytech.palmipedewebapp.service.PonteService;
 import org.slf4j.Logger;
@@ -86,6 +88,17 @@ public class PonteController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idPonte}")
+    public ResponseEntity<?> updatePonte(
+            @PathVariable Long idPonte,
+            @RequestBody PonteCreationRequest request
+
+    ){
+        Ponte ponte = service.updatePonte(request, idPonte);
+        return new ResponseEntity<>(ponte, HttpStatus.OK);
+
     }
 
     @DeleteMapping("/ponte/{idPonte}")

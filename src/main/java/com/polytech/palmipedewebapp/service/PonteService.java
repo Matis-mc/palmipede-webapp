@@ -1,8 +1,10 @@
 package com.polytech.palmipedewebapp.service;
 
 
+import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.entities.Ponte;
 import com.polytech.palmipedewebapp.repository.ApplicationRepository;
+import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import com.polytech.palmipedewebapp.requests.PonteCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,15 @@ public class PonteService {
     public List<Ponte> getPonteByBatiment(Long idBatiment){
 
         return repository.getPonteByBatiment(idBatiment);
+    }
+
+    public Ponte updatePonte(PonteCreationRequest request, long id){
+        int result = repository.updatePonte(request, id);
+        if(result > 0) {
+            return repository.getPonteById(id);
+        }else{
+            throw new RuntimeException("une erreur est survenue durant l'update");
+        }
     }
 
     public List<Ponte> getPonteByNid( Long idNid){

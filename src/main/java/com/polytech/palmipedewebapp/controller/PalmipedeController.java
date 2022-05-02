@@ -73,6 +73,17 @@ public class PalmipedeController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{idPalmipede}")
+    public ResponseEntity<?> updatePalmipede(
+            @PathVariable Long idPalmipede,
+            @RequestBody PalmipedeCreationRequest request
+
+    ){
+        Palmipede palmipede = service.updatePalmipede(request, idPalmipede);
+        return new ResponseEntity<>(palmipede, HttpStatus.OK);
+
+    }
+
     @PostMapping("/espece")
     public ResponseEntity<Espece> createEspece(
             @RequestBody EspeceCreationRequest request
@@ -83,6 +94,18 @@ public class PalmipedeController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+
+    @PutMapping("/espece/{idEspece}")
+    public ResponseEntity<?> updateEspece(
+            @PathVariable Long idEspece,
+            @RequestBody EspeceCreationRequest request
+
+    ){
+        Espece espece = service.updateEspece(request, idEspece);
+        return new ResponseEntity<>(espece, HttpStatus.OK);
+
     }
 
     @DeleteMapping("/palmipede/{idPalmipede}")

@@ -57,6 +57,17 @@ public class InfraController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @PutMapping("/nid/{idNid}")
+    public ResponseEntity<?> updateNid(
+            @PathVariable Long idNid,
+            @RequestBody NidCreationRequest request
+
+    ){
+        Nid nid = service.updateNid(request, idNid);
+        return new ResponseEntity<>(nid, HttpStatus.OK);
+
+    }
+
     @DeleteMapping("/nid/{idNid}")
     public ResponseEntity<?> deleteNid(
             @PathVariable Long idNid
@@ -168,6 +179,17 @@ public class InfraController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("uri", uri.toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/batiment/{idBatiment}")
+    public ResponseEntity<?> updateBatiment(
+            @PathVariable Long idBatiment,
+            @RequestBody BatimentCreationRequest request
+
+    ){
+        Batiment batiment = service.updateBatiment(request, idBatiment);
+        return new ResponseEntity<>(batiment, HttpStatus.OK);
+
     }
 
     @DeleteMapping("/batiment/{idBatiment}")

@@ -1,14 +1,8 @@
 package com.polytech.palmipedewebapp.service;
 
-import com.polytech.palmipedewebapp.entities.AntenneRFID;
-import com.polytech.palmipedewebapp.entities.Balance;
-import com.polytech.palmipedewebapp.entities.Batiment;
-import com.polytech.palmipedewebapp.entities.Nid;
+import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.repository.ApplicationRepository;
-import com.polytech.palmipedewebapp.requests.AntenneCreationRequest;
-import com.polytech.palmipedewebapp.requests.BalanceCreationRequest;
-import com.polytech.palmipedewebapp.requests.BatimentCreationRequest;
-import com.polytech.palmipedewebapp.requests.NidCreationRequest;
+import com.polytech.palmipedewebapp.requests.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +27,15 @@ public class InfraService {
         return repository.createBatiment(request);
     }
 
+    public Batiment updateBatiment(BatimentCreationRequest request, long id){
+        int result = repository.updateBatiment(request, id);
+        if(result > 0) {
+            return repository.getBatimentById(id);
+        }else{
+            throw new RuntimeException("une erreur est survenue durant l'update");
+        }
+    }
+
     public int deleteBatiment(Long id){
         return repository.deleteBatimentById(id);
     }
@@ -50,6 +53,15 @@ public class InfraService {
 
     public Long createNid(NidCreationRequest request){
         return repository.createNid(request);
+    }
+
+    public Nid updateNid(NidCreationRequest request, long id){
+        int result = repository.updateNid(request, id);
+        if(result > 0) {
+            return repository.getNidById(id);
+        }else{
+            throw new RuntimeException("une erreur est survenue durant l'update");
+        }
     }
 
     public int deleteNid(Long id){
