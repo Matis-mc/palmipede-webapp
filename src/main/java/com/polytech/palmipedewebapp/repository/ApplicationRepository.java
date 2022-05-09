@@ -105,6 +105,14 @@ public class ApplicationRepository {
 
     }
 
+    public int getCountPonteByEspece(Long idEspece, Date dateToRequest){
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ponte JOIN palmipede ON ponte.id_palmipede = palmipede.id_palmipede WHERE ponte.date = ? AND palmipede.id_espece = ?", new Object[]{dateToRequest, idEspece}, Integer.class);
+    }
+
+    public int getCountPonteByBatiment(Long idBatiment, Date dateToRequest){
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ponte JOIN nid ON ponte.id_nid = nid.id_nid WHERE ponte.date = ? AND nid.id_batiment = ?", new Object[]{dateToRequest, idBatiment}, Integer.class);
+    }
+
     public Long createPonte(PonteCreationRequest request){
         //int result = jdbcTemplate.update("INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?)", request.getDatePonte(), request.getIdNid(), request.getIdPalmipede() );
 
