@@ -46,9 +46,10 @@ public class ApplicationRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-            "INSERT INTO palmipede(id_espece, tag_rfid) VALUES(?, ?)", new String[]{"id_palmipede"});
+            "INSERT INTO palmipede(id_espece, nom_espece, tag_rfid) VALUES(?, ?, ?)", new String[]{"id_palmipede"});
             ps.setLong(1, request.getIdEspece());
-            ps.setString(2, request.getTagRFID());
+            ps.setString(2, request.getNom_espece());
+            ps.setString(3, request.getTagRFID());
 
             return ps;
         }, keyHolder );
@@ -59,8 +60,8 @@ public class ApplicationRepository {
 
     public int updatePalmipede(PalmipedeCreationRequest request, long idPalmipede){
 
-        return jdbcTemplate.update("UPDATE palmipede SET id_espece = ?, tag_rfid = ? WHERE id_palmipede = ?;",
-                request.getIdEspece(), request.getTagRFID(), idPalmipede);
+        return jdbcTemplate.update("UPDATE palmipede SET id_espece = ?, nom_espece = ?, tag_rfid = ? WHERE id_palmipede = ?;",
+                request.getIdEspece(), request.getNom_espece(), request.getTagRFID(), idPalmipede);
     }
 
     public int deletePalmipedeById(Long id){

@@ -9,6 +9,7 @@ public class Palmipede {
     private Long idPalmipede;
     private Long idEspece;
     private String tagRFID;
+    private String nom_espece;
 
     public Palmipede(Long idEspece, String tag) {
         this.idEspece = idEspece;
@@ -19,6 +20,14 @@ public class Palmipede {
 
     }
 
+
+    public String getNom_espece() {
+        return nom_espece;
+    }
+
+    public void setNom_espece(String nom_espece) {
+        this.nom_espece = nom_espece;
+    }
 
     public Long getIdPalmipede() {
         return idPalmipede;

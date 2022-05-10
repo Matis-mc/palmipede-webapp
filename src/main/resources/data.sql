@@ -1,12 +1,16 @@
 CREATE TABLE PALMIPEDE(
     id_palmipede INT PRIMARY KEY AUTO_INCREMENT,
     id_espece INTEGER,
+    nom_espece VARCHAR,
     tag_rfid VARCHAR
 );
 
-INSERT INTO PALMIPEDE(id_palmipede, id_espece, tag_rfid)VALUES( 1, 1, '3465');
-INSERT INTO PALMIPEDE(id_palmipede, id_espece, tag_rfid)VALUES( 2, 1, '3765');
-INSERT INTO PALMIPEDE(id_palmipede, id_espece, tag_rfid)VALUES( 3, 0, '3215');
+INSERT INTO PALMIPEDE(id_palmipede, id_espece, nom_espece, tag_rfid)VALUES( 1, 1, 'oie', '3465');
+INSERT INTO PALMIPEDE(id_palmipede, id_espece, nom_espece, tag_rfid)VALUES( 2, 1, 'oie', '3765');
+INSERT INTO PALMIPEDE(id_palmipede, id_espece, nom_espece, tag_rfid)VALUES( 3, 0,'canard', '3215');
+INSERT INTO PALMIPEDE(id_palmipede, id_espece, nom_espece, tag_rfid)VALUES( 4, 0,'oie', '3210');
+INSERT INTO PALMIPEDE(id_palmipede, id_espece, nom_espece, tag_rfid)VALUES( 5, 0,'canard', '3245');
+
 
 CREATE TABLE PONTE(
     id_ponte INT PRIMARY KEY AUTO_INCREMENT,
@@ -25,6 +29,16 @@ INSERT INTO PONTE VALUES ( 6, '2022-05-05', 2, 2 );
 INSERT INTO PONTE VALUES ( 7, '2022-05-09', 2, 1 );
 INSERT INTO PONTE VALUES ( 8, '2022-05-08', 2, 2 );
 INSERT INTO PONTE VALUES ( 9, '2022-05-07', 2, 2 );
+INSERT INTO PONTE VALUES ( 10, '2022-05-01', 1, 2 );
+INSERT INTO PONTE VALUES ( 11, '2022-05-12', 2, 3 );
+INSERT INTO PONTE VALUES ( 12, '2022-05-07', 0, 5 );
+INSERT INTO PONTE VALUES ( 13, '2022-05-01', 3, 1 );
+INSERT INTO PONTE VALUES ( 14, '2022-05-02', 1, 2 );
+INSERT INTO PONTE VALUES ( 15, '2022-05-05', 2, 4 );
+INSERT INTO PONTE VALUES ( 16, '2022-05-05', 2, 2 );
+INSERT INTO PONTE VALUES ( 17, '2022-05-09', 2, 5 );
+INSERT INTO PONTE VALUES ( 18, '2022-05-08', 2, 2 );
+INSERT INTO PONTE VALUES ( 19, '2022-05-07', 2, 2 );
 
 
 CREATE TABLE NID(
