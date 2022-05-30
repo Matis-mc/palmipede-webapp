@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -46,6 +47,7 @@ public class InfraController {
         return new ResponseEntity(service.getNidById(idNid), HttpStatus.OK);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @PostMapping("/nid")
     public ResponseEntity<Nid> createNid(
             @RequestBody NidCreationRequest request
@@ -57,6 +59,7 @@ public class InfraController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @PutMapping("/nid/{idNid}")
     public ResponseEntity<?> updateNid(
             @PathVariable Long idNid,
@@ -68,6 +71,7 @@ public class InfraController {
 
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/nid/{idNid}")
     public ResponseEntity<?> deleteNid(
             @PathVariable Long idNid
@@ -94,6 +98,7 @@ public class InfraController {
         return new ResponseEntity(service.getBalanceById(idBalance), HttpStatus.OK);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @PostMapping("/balance")
     public ResponseEntity<Balance> createBalance(
             @RequestBody BalanceCreationRequest request
@@ -105,6 +110,7 @@ public class InfraController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/balance/{idBalance}")
     public ResponseEntity<?> deleteBalance(
             @PathVariable Long idBalance

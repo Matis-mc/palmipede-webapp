@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.sql.Date;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class ChartController {
     @Autowired
     private ChartService service;
 
+    @RolesAllowed("USER")
     @PostMapping("/ponte/espece")
     public ResponseEntity<?> getPonteByDayAndEspece(
             @RequestBody ChartRequest request){
@@ -27,6 +29,7 @@ public class ChartController {
         return new ResponseEntity<Map<Date, Integer>>(pontes, HttpStatus.OK);
     }
 
+    @RolesAllowed("USER")
     @PostMapping("/ponte/batiment")
     public ResponseEntity<?> getPonteByDayAndBatiment(
             @RequestBody ChartRequest request){
