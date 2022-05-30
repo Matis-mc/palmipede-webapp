@@ -29,15 +29,15 @@ public class ApplicationRepository {
      //====================================== Palmipede ================================================//
 
     public List<Palmipede> getPalmipede(){
-         return jdbcTemplate.query("SELECT * FROM palmipede", new PalmipedeRowMapper());
+         return jdbcTemplate.query("SELECT * FROM PALMIPEDE", new PalmipedeRowMapper());
     }
 
     public int getCountPalmipede(){
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM palmipede", Integer.class);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM PALMIPEDE", Integer.class);
     }
 
     public Palmipede getPalmipedeById(Long id){
-        return jdbcTemplate.queryForObject("SELECT * FROM palmipede WHERE id_palmipede = ?", new Object[]{id}, new PalmipedeRowMapper());
+        return jdbcTemplate.queryForObject("SELECT * FROM PALMIPEDE WHERE id_palmipede = ?", new Object[]{id}, new PalmipedeRowMapper());
 
     }
 
@@ -46,7 +46,7 @@ public class ApplicationRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-            "INSERT INTO palmipede(id_espece, nom_espece, tag_rfid) VALUES(?, ?, ?)", new String[]{"id_palmipede"});
+            "INSERT INTO PALMIPEDE(id_espece, nom_espece, tag_rfid) VALUES(?, ?, ?)", new String[]{"id_palmipede"});
             ps.setLong(1, request.getIdEspece());
             ps.setString(2, request.getNom_espece());
             ps.setString(3, request.getTagRFID());
@@ -60,7 +60,7 @@ public class ApplicationRepository {
 
     public int updatePalmipede(PalmipedeCreationRequest request, long idPalmipede){
 
-        return jdbcTemplate.update("UPDATE palmipede SET id_espece = ?, nom_espece = ?, tag_rfid = ? WHERE id_palmipede = ?;",
+        return jdbcTemplate.update("UPDATE PALMIPEDE SET id_espece = ?, nom_espece = ?, tag_rfid = ? WHERE id_palmipede = ?;",
                 request.getIdEspece(), request.getNom_espece(), request.getTagRFID(), idPalmipede);
     }
 
@@ -84,34 +84,34 @@ public class ApplicationRepository {
 
     public List<Ponte> getPonteByDay(Date date){
 
-        return jdbcTemplate.query("SELECT * FROM ponte WHERE date = ?", new Object[]{date}, new PonteRowMapper());
+        return jdbcTemplate.query("SELECT * FROM PONTE WHERE date = ?", new Object[]{date}, new PonteRowMapper());
 
     }
 
     public List<Ponte> getPonteByBatiment(Long idBatiment){
 
-        return jdbcTemplate.query("SELECT * FROM ponte JOIN nid ON ponte.id_nid = nid.id_nid WHERE nid.id_batiment = ?", new Object[]{idBatiment}, new PonteRowMapper());
+        return jdbcTemplate.query("SELECT * FROM PONTE JOIN nid ON ponte.id_nid = nid.id_nid WHERE nid.id_batiment = ?", new Object[]{idBatiment}, new PonteRowMapper());
 
     }
 
     public List<Ponte> getPonteByNid( Long idNid){
 
-        return jdbcTemplate.query("SELECT * FROM ponte WHERE id_nid = ?", new Object[]{idNid}, new PonteRowMapper());
+        return jdbcTemplate.query("SELECT * FROM PONTE WHERE id_nid = ?", new Object[]{idNid}, new PonteRowMapper());
 
     }
 
     public List<Ponte> getPonteByPalmipede(Long idPalmipede){
 
-        return jdbcTemplate.query("SELECT * FROM ponte WHERE id_palmipede = ?", new Object[]{idPalmipede}, new PonteRowMapper());
+        return jdbcTemplate.query("SELECT * FROM PONTE WHERE id_palmipede = ?", new Object[]{idPalmipede}, new PonteRowMapper());
 
     }
 
     public int getCountPonteByEspece(Long idEspece, Date dateToRequest){
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ponte JOIN palmipede ON ponte.id_palmipede = palmipede.id_palmipede WHERE ponte.date = ? AND palmipede.id_espece = ?", new Object[]{dateToRequest, idEspece}, Integer.class);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM PONTE JOIN PALMIPEDE ON ponte.id_palmipede = palmipede.id_palmipede WHERE ponte.date = ? AND palmipede.id_espece = ?", new Object[]{dateToRequest, idEspece}, Integer.class);
     }
 
     public int getCountPonteByBatiment(Long idBatiment, Date dateToRequest){
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ponte JOIN nid ON ponte.id_nid = nid.id_nid WHERE ponte.date = ? AND nid.id_batiment = ?", new Object[]{dateToRequest, idBatiment}, Integer.class);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM PONTE JOIN NID ON ponte.id_nid = nid.id_nid WHERE ponte.date = ? AND nid.id_batiment = ?", new Object[]{dateToRequest, idBatiment}, Integer.class);
     }
 
     public Long createPonte(PonteCreationRequest request){
@@ -121,7 +121,7 @@ public class ApplicationRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO ponte(date, id_nid, id_palmipede) VALUES(?, ?, ?)", new String[]{"id_ponte"});
+                    "INSERT INTO PONTE(date, id_nid, id_palmipede) VALUES(?, ?, ?)", new String[]{"id_ponte"});
             ps.setDate(1, request.getDatePonte());
             ps.setLong(2, request.getIdNid());
             ps.setLong(3, request.getIdPalmipede());
@@ -134,7 +134,7 @@ public class ApplicationRepository {
     }
 
     public int updatePonte(PonteCreationRequest request, long idPonte){
-        return jdbcTemplate.update("UPDATE ponte SET date = ?, id_nid = ?, id_palmipede = ? WHERE id_ponte = ?;",
+        return jdbcTemplate.update("UPDATE PONTE SET date = ?, id_nid = ?, id_palmipede = ? WHERE id_ponte = ?;",
                 request.getDatePonte(), request.getIdNid(), request.getIdPalmipede(), idPonte);
     }
 
@@ -181,7 +181,7 @@ public class ApplicationRepository {
 
     public int updateEspece(EspeceCreationRequest request, long idEspece){
 
-        return jdbcTemplate.update("UPDATE espece SET nom = ?, poid_minimal_palmipede = ?, " +
+        return jdbcTemplate.update("UPDATE ESPECE SET nom = ?, poid_minimal_palmipede = ?, " +
                         "poid_maximal_palmipede = ?, poid_minimal_oeuf = ?, poid_maximal_oeuf = ? WHERE id_espece = ?;",request.getName(),
                 request.getPoidMinimalPalmipede(), request.getPoidMaximalPalmipede(), request.getPoidMinimalOeuf(), request.getPoidMaximalOeuf(), idEspece);
     }
@@ -228,7 +228,7 @@ public class ApplicationRepository {
 
     public int updateBatiment(BatimentCreationRequest request, long idBatiment){
 
-        return jdbcTemplate.update("UPDATE batiment SET nom = ?, id_espece = ? " +
+        return jdbcTemplate.update("UPDATE BATIMENT SET nom = ?, id_espece = ? " +
                         " WHERE id_batiment = ?;", request.getName(),
                 request.getIdEspece(), idBatiment);
     }
@@ -273,7 +273,7 @@ public class ApplicationRepository {
 
     public int updateNid(NidCreationRequest request, long idNid){
 
-        return jdbcTemplate.update("UPDATE nid SET id_antenne = ?, id_balance = ?, id_batiment = ? " +
+        return jdbcTemplate.update("UPDATE NID SET id_antenne = ?, id_balance = ?, id_batiment = ? " +
                         " WHERE id_nid = ?;", request.getIdAntenne(), request.getIdBalance(), request.getIdBatiment(), idNid);
     }
 

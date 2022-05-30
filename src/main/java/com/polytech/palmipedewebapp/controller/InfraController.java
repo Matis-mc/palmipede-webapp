@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @Controller
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = "*")
 @RequestMapping("infra")
 public class InfraController {
 
