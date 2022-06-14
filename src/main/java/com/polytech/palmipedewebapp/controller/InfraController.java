@@ -1,7 +1,9 @@
 package com.polytech.palmipedewebapp.controller;
 
+import com.polytech.palmipedewebapp.exception.UserNotFoundException;
 import com.polytech.palmipedewebapp.entities.*;
 import com.polytech.palmipedewebapp.requests.*;
+import com.polytech.palmipedewebapp.security.AuthProvider;
 import com.polytech.palmipedewebapp.service.InfraService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -28,6 +29,10 @@ public class InfraController {
     @Autowired
     private InfraService service;
 
+    @Autowired
+    private AuthProvider authProvider;
+
+
     private String nidURL = "infra/nid/";
     private String balanceURL = "infra/balance/";
     private String antenneURL = "infra/antenne/";
@@ -35,179 +40,367 @@ public class InfraController {
 
     //====================================== Nid ================================================//
 
+    /**
+     * Renvoit la liste de tous les nids
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/nid")
-    public ResponseEntity<List<Nid>> getNids(){
-        return new ResponseEntity(service.getNid(), HttpStatus.OK);
+    public ResponseEntity<List<Nid>> getNids(@RequestHeader("username") String username,
+                                             @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getNid(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
+    /**
+     * Renvoit le nid dont l'id est en paramètre.
+     * @param idNid
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/nid/{idNid}")
     public ResponseEntity<Nid> getNid(
-            @PathVariable Long idNid
-    ){
-        return new ResponseEntity(service.getNidById(idNid), HttpStatus.OK);
+            @PathVariable Long idNid,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getNidById(idNid), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
-    @RolesAllowed("TECHNICIEN")
+    /**
+     * Créer un nouveau nid, à partir d'une requête donnée en payload.
+     * @param request
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     * @throws URISyntaxException
+     */
     @PostMapping("/nid")
     public ResponseEntity<Nid> createNid(
-            @RequestBody NidCreationRequest request
-    ) throws URISyntaxException {
-        Long id = service.createNid(request);
-        URI uri = new URI(nidURL + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody NidCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException, URISyntaxException {
+        if (authProvider.isAuthWithRole(username, password, "TECHNICIEN")) {
+            Long id = service.createNid(request);
+            URI uri = new URI(nidURL + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
-    @RolesAllowed("TECHNICIEN")
+    /**
+     * Modifie un nid à partir d'une requête donnée en payload.
+     * @param idNid
+     * @param request
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @PutMapping("/nid/{idNid}")
     public ResponseEntity<?> updateNid(
             @PathVariable Long idNid,
-            @RequestBody NidCreationRequest request
+            @RequestBody NidCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuthWithRole(username, password, "TECHNICIEN")) {
 
-    ){
-        Nid nid = service.updateNid(request, idNid);
-        return new ResponseEntity<>(nid, HttpStatus.OK);
+            Nid nid = service.updateNid(request, idNid);
+            return new ResponseEntity<>(nid, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
-    @RolesAllowed("TECHNICIEN")
+    /**
+     * Supprime un nid à partir de l'id donnée en paramètre.
+     * @param idNid
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @DeleteMapping("/nid/{idNid}")
     public ResponseEntity<?> deleteNid(
-            @PathVariable Long idNid
-    ){
-        int nbRow = service.deleteNid(idNid);
-        if(nbRow > 0){
-            return new ResponseEntity<>("Nid deleted",HttpStatus.ACCEPTED);
+            @PathVariable Long idNid,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuthWithRole(username, password, "TECHNICIEN")) {
+            int nbRow = service.deleteNid(idNid);
+            if (nbRow > 0) {
+                return new ResponseEntity<>("Nid deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Nid not deleted", HttpStatus.NOT_FOUND);
+            }
         } else {
-            return new ResponseEntity<>("Nid not deleted",HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 
     //====================================== Balance ================================================//
 
+    /**
+     * Renvoit la liste de tous les balances
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/balance")
-    public ResponseEntity<List<Balance>> getBalances(){
-        return new ResponseEntity(service.getBalance(), HttpStatus.OK);
+    public ResponseEntity<List<Balance>> getBalances(@RequestHeader("username") String username,
+                                                     @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getBalance(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
+    /**
+     * Renvoit la balance dont l'id est en paramètre.
+     * @param idBalance
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/balance/{idBalance}")
     public ResponseEntity<Balance> getBalance(
-            @PathVariable Long idBalance
-    ){
-        return new ResponseEntity(service.getBalanceById(idBalance), HttpStatus.OK);
+            @PathVariable Long idBalance,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getBalanceById(idBalance), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
-    @RolesAllowed("TECHNICIEN")
     @PostMapping("/balance")
     public ResponseEntity<Balance> createBalance(
-            @RequestBody BalanceCreationRequest request
-    ) throws URISyntaxException {
-        Long id = service.createBalance(request);
-        URI uri = new URI(balanceURL + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody BalanceCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException, URISyntaxException {
+        if (authProvider.isAuthWithRole(username, password, "TECHNICIEN")) {
+
+            Long id = service.createBalance(request);
+            URI uri = new URI(balanceURL + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
-    @RolesAllowed("TECHNICIEN")
     @DeleteMapping("/balance/{idBalance}")
     public ResponseEntity<?> deleteBalance(
-            @PathVariable Long idBalance
-    ){
-        int nbRow = service.deleteBalance(idBalance);
-        if(nbRow > 0){
-            return new ResponseEntity<>("Balance deleted",HttpStatus.ACCEPTED);
+            @PathVariable Long idBalance,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuthWithRole(username, password, "TECHNICIEN")) {
+
+            int nbRow = service.deleteBalance(idBalance);
+            if (nbRow > 0) {
+                return new ResponseEntity<>("Balance deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Balance not deleted", HttpStatus.NOT_FOUND);
+            }
         } else {
-            return new ResponseEntity<>("Balance not deleted",HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 
 
     //====================================== Antenne ================================================//
 
+    /**
+     * Renvoit la liste de toutes les antennes
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/antenne")
-    public ResponseEntity<List<AntenneRFID>> getAntennes(){
-        return new ResponseEntity(service.getAntenne(), HttpStatus.OK);
+    public ResponseEntity<List<AntenneRFID>> getAntennes(@RequestHeader("username") String username,
+                                                         @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getAntenne(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
+    /**
+     * Renvoit le nid dont l'id est en paramètre.
+     * @param idAntenne
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/antenne/{idAntenne}")
     public ResponseEntity<AntenneRFID> getAntenne(
-            @PathVariable Long idAntenne
-    ){
-        return new ResponseEntity(service.getAntenneById(idAntenne), HttpStatus.OK);
+            @PathVariable Long idAntenne,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getAntenneById(idAntenne), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping("/antenne")
     public ResponseEntity<AntenneRFID> createAntenne(
-            @RequestBody AntenneCreationRequest request
-    ) throws URISyntaxException {
-        LOGGER.info(request.toString());
-        Long id = service.createAntenne(request);
-        URI uri = new URI(antenneURL + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody AntenneCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException, URISyntaxException {
+        if (authProvider.isAuth(username, password)) {
+            LOGGER.info(request.toString());
+            Long id = service.createAntenne(request);
+            URI uri = new URI(antenneURL + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @DeleteMapping("/antenne/{idAntenne}")
     public ResponseEntity<?> deleteAntenne(
-            @PathVariable Long idAntenne
-    ){
-        int nbRow = service.deleteAntenne(idAntenne);
-        if(nbRow > 0){
-            return new ResponseEntity<>("Antenne deleted",HttpStatus.ACCEPTED);
+            @PathVariable Long idAntenne,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+
+            int nbRow = service.deleteAntenne(idAntenne);
+            if (nbRow > 0) {
+                return new ResponseEntity<>("Antenne deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Antenne not deleted", HttpStatus.NOT_FOUND);
+            }
         } else {
-            return new ResponseEntity<>("Antenne not deleted",HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 
     //====================================== Batiment ================================================//
 
+    /**
+     * Renvoit la liste de tous les batiments
+     * @param username
+     * @param password
+     * @return
+     * @throws UserNotFoundException
+     */
     @GetMapping("/Batiment")
-    public ResponseEntity<List<Batiment>> getBatiments(){
-        return new ResponseEntity(service.getAllBatiment(), HttpStatus.OK);
+    public ResponseEntity<List<Batiment>> getBatiments(@RequestHeader("username") String username,
+                                                       @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getAllBatiment(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/batiment/{idBatiment}")
     public ResponseEntity<Batiment> getBatiment(
-            @PathVariable Long idBatiment
-    ){
-        return new ResponseEntity(service.getBatimentById(idBatiment), HttpStatus.OK);
+            @PathVariable Long idBatiment,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+            return new ResponseEntity(service.getBatimentById(idBatiment), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
-    
+
     @PostMapping("/batiment")
     public ResponseEntity<Batiment> createBatiment(
-            @RequestBody BatimentCreationRequest request
-    ) throws URISyntaxException {
-        Long id = service.createBatiment(request);
-        URI uri = new URI(batimentURL + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody BatimentCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException, URISyntaxException {
+        if (authProvider.isAuth(username, password)) {
+
+            Long id = service.createBatiment(request);
+            URI uri = new URI(batimentURL + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("/batiment/{idBatiment}")
     public ResponseEntity<?> updateBatiment(
             @PathVariable Long idBatiment,
-            @RequestBody BatimentCreationRequest request
+            @RequestBody BatimentCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
 
-    ){
-        Batiment batiment = service.updateBatiment(request, idBatiment);
-        return new ResponseEntity<>(batiment, HttpStatus.OK);
+            Batiment batiment = service.updateBatiment(request, idBatiment);
+            return new ResponseEntity<>(batiment, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
     @DeleteMapping("/batiment/{idBatiment}")
     public ResponseEntity<?> deleteBatiment(
-            @PathVariable Long idBatiment
-    ){
-        int nbRow = service.deleteBatiment(idBatiment);
-        if(nbRow > 0){
-            return new ResponseEntity<>("Batiment deleted",HttpStatus.ACCEPTED);
+            @PathVariable Long idBatiment,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuth(username, password)) {
+
+            int nbRow = service.deleteBatiment(idBatiment);
+            if (nbRow > 0) {
+                return new ResponseEntity<>("Batiment deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Batiment not deleted", HttpStatus.NOT_FOUND);
+            }
         } else {
-            return new ResponseEntity<>("Batiment not deleted",HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
-    }
+}
+
+
 

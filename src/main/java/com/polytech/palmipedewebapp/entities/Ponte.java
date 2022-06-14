@@ -3,7 +3,6 @@ package com.polytech.palmipedewebapp.entities;
 import org.springframework.data.annotation.Id;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Ponte {
 

@@ -1,9 +1,9 @@
 package com.polytech.palmipedewebapp.controller;
 
-import com.polytech.palmipedewebapp.entities.Palmipede;
+import com.polytech.palmipedewebapp.exception.UserNotFoundException;
 import com.polytech.palmipedewebapp.entities.Ponte;
-import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import com.polytech.palmipedewebapp.requests.PonteCreationRequest;
+import com.polytech.palmipedewebapp.security.AuthProvider;
 import com.polytech.palmipedewebapp.service.PonteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -28,89 +26,150 @@ public class PonteController {
     @Autowired
     private PonteService service;
 
+    @Autowired
+    private AuthProvider authProvider;
+
+
     Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private String ponteURL = "ponte/";
 
     @GetMapping()
-    public ResponseEntity<List<Ponte>> getPontes(){
-
-        return new ResponseEntity(service.getPonte(), HttpStatus.OK);
+    public ResponseEntity<List<Ponte>> getPontes(
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPonte(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/{idPonte}")
     public ResponseEntity<Ponte> getPontes(
-            @PathVariable Long idPonte
-    ){
-        return new ResponseEntity(service.getPonteById(idPonte), HttpStatus.OK);
+            @PathVariable Long idPonte,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPonteById(idPonte), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/date/{date}")
     public ResponseEntity<?> getPontesByDate(
-            @PathVariable String date
-    ){
-        try {
-            return new ResponseEntity(service.getPonteByDay(date), HttpStatus.OK);
-       }catch (IllegalArgumentException e) {
-            String errMsg = "Error while parsing date, be sure to use the following format : yyyy - MM - dd   Trace : ";
-            return new ResponseEntity<>( errMsg + e.getStackTrace(), HttpStatus.BAD_REQUEST);
+            @PathVariable String date,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+
+            try {
+                return new ResponseEntity(service.getPonteByDay(date), HttpStatus.OK);
+            } catch (IllegalArgumentException e) {
+                String errMsg = "Error while parsing date, be sure to use the following format : yyyy - MM - dd   Trace : ";
+                return new ResponseEntity<>(errMsg + e.getStackTrace(), HttpStatus.BAD_REQUEST);
+            }
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
     }
 
     @GetMapping("/nid/{idNid}")
     public ResponseEntity<List<Ponte>> getPontesByNid(
-            @PathVariable Long idNid
-    ){
-        return new ResponseEntity(service.getPonteByNid(idNid), HttpStatus.OK);
+            @PathVariable Long idNid,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPonteByNid(idNid), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/batiment/{idBatiment}")
     public ResponseEntity<List<Ponte>> getPonteByBatiment(
-            @PathVariable Long idBatiment
-    ){
-        return new ResponseEntity(service.getPonteByBatiment(idBatiment), HttpStatus.OK);
+            @PathVariable Long idBatiment,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPonteByBatiment(idBatiment), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/palmipede/{idPalmipede}")
     public ResponseEntity<List<Ponte>> getPonteByPalmipede(
-            @PathVariable Long idPalmipede
-    ){
-        return new ResponseEntity(service.getPonteByPalmipede(idPalmipede), HttpStatus.OK);
+            @PathVariable Long idPalmipede,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPonteByPalmipede(idPalmipede), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping()
     public ResponseEntity<Ponte> createPonte(
-            @RequestBody PonteCreationRequest request
-            ) throws URISyntaxException {
-        LOGGER.info(request.toString());
-        Long id = service.createPonte(request);
-        URI uri = new URI(ponteURL + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody PonteCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException, URISyntaxException {
+        if(authProvider.isAuth(username,password)) {
+
+            LOGGER.info(request.toString());
+            Long id = service.createPonte(request);
+            URI uri = new URI(ponteURL + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("/{idPonte}")
     public ResponseEntity<?> updatePonte(
             @PathVariable Long idPonte,
-            @RequestBody PonteCreationRequest request
+            @RequestBody PonteCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
 
-    ){
-        Ponte ponte = service.updatePonte(request, idPonte);
-        return new ResponseEntity<>(ponte, HttpStatus.OK);
+            Ponte ponte = service.updatePonte(request, idPonte);
+            return new ResponseEntity<>(ponte, HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
     @DeleteMapping("/ponte/{idPonte}")
     public ResponseEntity<?> deletePonte(
-            @PathVariable Long idPonte
-    ){
-        int nbRow = service.deletePonte(idPonte);
+            @PathVariable Long idPonte,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
 
-        if(nbRow > 0){
-            return new ResponseEntity<>("Ponte deleted",HttpStatus.ACCEPTED);
-        } else {
-            return new ResponseEntity<>("Ponte not deleted",HttpStatus.NOT_FOUND);
+            int nbRow = service.deletePonte(idPonte);
+
+            if (nbRow > 0) {
+                return new ResponseEntity<>("Ponte deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Ponte not deleted", HttpStatus.NOT_FOUND);
+            }
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 

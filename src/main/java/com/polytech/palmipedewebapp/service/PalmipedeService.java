@@ -5,6 +5,7 @@ import com.polytech.palmipedewebapp.entities.Espece;
 import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.entities.Ponte;
 import com.polytech.palmipedewebapp.repository.ApplicationRepository;
+import com.polytech.palmipedewebapp.repository.UserRepository;
 import com.polytech.palmipedewebapp.requests.EspeceCreationRequest;
 import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class PalmipedeService {
 
     @Autowired
     private ApplicationRepository repository;
+
+    @Autowired
+    private UserRepository repository1;
 
     public List<Espece> getAllEspece(){
         return repository.getEspece();

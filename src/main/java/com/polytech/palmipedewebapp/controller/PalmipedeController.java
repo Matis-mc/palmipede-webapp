@@ -1,9 +1,11 @@
 package com.polytech.palmipedewebapp.controller;
 
+import com.polytech.palmipedewebapp.exception.UserNotFoundException;
 import com.polytech.palmipedewebapp.entities.Espece;
 import com.polytech.palmipedewebapp.entities.Palmipede;
 import com.polytech.palmipedewebapp.requests.EspeceCreationRequest;
 import com.polytech.palmipedewebapp.requests.PalmipedeCreationRequest;
+import com.polytech.palmipedewebapp.security.AuthProvider;
 import com.polytech.palmipedewebapp.service.PalmipedeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @Controller
@@ -32,104 +33,176 @@ public class PalmipedeController {
     @Autowired
     private PalmipedeService service;
 
+    @Autowired
+    private AuthProvider authProvider;
+
+
     @GetMapping
-    public ResponseEntity<List<Palmipede>> getPalmipede(){
-        return new ResponseEntity(service.getAllPalmipede(), HttpStatus.OK);
+    public ResponseEntity<List<Palmipede>> getPalmipede(
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)){
+            return new ResponseEntity(service.getAllPalmipede(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/{idPalmipede}")
     public ResponseEntity<Palmipede> getPalmipedeById(
-            @PathVariable Long idPalmipede
-    ){
-        return new ResponseEntity(service.getPalmipedeById(idPalmipede), HttpStatus.OK);
+            @PathVariable Long idPalmipede,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPalmipedeById(idPalmipede), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Palmipede> getCount(){
-        return new ResponseEntity(service.getCount(), HttpStatus.OK);
+    public ResponseEntity<Palmipede> getCount(            @RequestHeader("username") String username,
+                                                          @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getCount(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/espece")
-    public ResponseEntity<List<Espece>> getEspece(){
-        return new ResponseEntity(service.getAllEspece(), HttpStatus.OK);
+    public ResponseEntity<List<Espece>> getEspece(            @RequestHeader("username") String username,
+                                                              @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getAllEspece(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/espece/{idEspece}")
     public ResponseEntity<Espece> getEspeceById(
-            @PathVariable Long idEspece
-    ){
-        return new ResponseEntity(service.getPalmipedeById(idEspece), HttpStatus.OK);
+            @PathVariable Long idEspece,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            return new ResponseEntity(service.getPalmipedeById(idEspece), HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping()
     public ResponseEntity<?> createPalmipede(
-            @RequestBody PalmipedeCreationRequest request
-            ) throws URISyntaxException {
-        LOGGER.info(request.toString());
-        Long id = service.createPalmipede(request);
-        URI uri = new URI(palmipedeURL + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody PalmipedeCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException , URISyntaxException {
+        if(authProvider.isAuth(username,password)) {
+            LOGGER.info(request.toString());
+            Long id = service.createPalmipede(request);
+            URI uri = new URI(palmipedeURL + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("/{idPalmipede}")
     public ResponseEntity<?> updatePalmipede(
             @PathVariable Long idPalmipede,
-            @RequestBody PalmipedeCreationRequest request
-
-    ){
-        Palmipede palmipede = service.updatePalmipede(request, idPalmipede);
-        return new ResponseEntity<>(palmipede, HttpStatus.OK);
+            @RequestBody PalmipedeCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+            Palmipede palmipede = service.updatePalmipede(request, idPalmipede);
+            return new ResponseEntity<>(palmipede, HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
     @PostMapping("/espece")
     public ResponseEntity<Espece> createEspece(
-            @RequestBody EspeceCreationRequest request
-            ) throws URISyntaxException {
-        LOGGER.info(request.toString());
-        Long id = service.createEspece(request);
-        URI uri = new URI(especeUrl + id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("uri", uri.toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            @RequestBody EspeceCreationRequest request,
+
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException, URISyntaxException {
+        if(authProvider.isAuthWithRole(username,password,"TECHNICIEN")) {
+            LOGGER.info(request.toString());
+            Long id = service.createEspece(request);
+            URI uri = new URI(especeUrl + id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("uri", uri.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 
     @PutMapping("/espece/{idEspece}")
     public ResponseEntity<?> updateEspece(
             @PathVariable Long idEspece,
-            @RequestBody EspeceCreationRequest request
-
-    ){
-        Espece espece = service.updateEspece(request, idEspece);
-        return new ResponseEntity<>(espece, HttpStatus.OK);
+            @RequestBody EspeceCreationRequest request,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuthWithRole(username,password,"TECHNICIEN")) {
+            Espece espece = service.updateEspece(request, idEspece);
+            return new ResponseEntity<>(espece, HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
     @DeleteMapping("/palmipede/{idPalmipede}")
     public ResponseEntity<?> deletePalmipede(
-            @PathVariable Long idPalmipede
-    ){
-        int nbrow = service.deletePalmipede(idPalmipede);
-        if(nbrow > 0){
-            return new ResponseEntity<>("Palmipede deleted",HttpStatus.ACCEPTED);
-        } else {
-            return new ResponseEntity<>("Palmipede not deleted",HttpStatus.BAD_REQUEST);
+            @PathVariable Long idPalmipede,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if(authProvider.isAuth(username,password)) {
+
+            int nbrow = service.deletePalmipede(idPalmipede);
+            if (nbrow > 0) {
+                return new ResponseEntity<>("Palmipede deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Palmipede not deleted", HttpStatus.BAD_REQUEST);
+            }
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @DeleteMapping("/espece/{idEspece}")
     public ResponseEntity<?> deleteNid(
-            @PathVariable Long idEspece
-    ){
-        int nbrow = service.deleteEspece(idEspece);
+            @PathVariable Long idEspece,
+            @RequestHeader("username") String username,
+            @RequestHeader("password") String password
+    ) throws UserNotFoundException {
+        if (authProvider.isAuthWithRole(username, password, "ADMIN")) {
 
-        if(nbrow > 0){
-            return new ResponseEntity<>("Espece deleted",HttpStatus.ACCEPTED);
+            int nbrow = service.deleteEspece(idEspece);
+
+            if (nbrow > 0) {
+                return new ResponseEntity<>("Espece deleted", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Espece not deleted", HttpStatus.NOT_FOUND);
+            }
         } else {
-            return new ResponseEntity<>("Espece not deleted",HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 
