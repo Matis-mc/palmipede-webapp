@@ -44,7 +44,7 @@ CREATE TABLE ANTENNE_RFID(
 
 );
 
-CREATE TABLE USER(
+CREATE TABLE USERS(
                      id_user INT PRIMARY KEY AUTO_INCREMENT,
                      username VARCHAR,
                      password VARCHAR,
