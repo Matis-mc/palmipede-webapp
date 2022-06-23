@@ -19,7 +19,7 @@ public class UserRepository{
 
 
     public Optional<User> findUserWithName(String username){
-        return jdbcTemplate.queryForObject("SELECT * FROM USER WHERE username  = ?", new Object[]{username}, new UserRowMapper());
+        return jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE username  = ?", new Object[]{username}, new UserRowMapper());
     }
 
     public long createUser(String username, String password){
@@ -27,7 +27,7 @@ public class UserRepository{
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO USER(username, password, role, date_creation, date_suppression, is_locked ) VALUES(?, ?, 'USER', now(), null, FALSE )", new String[]{"id_espece"});
+                    "INSERT INTO USERS(username, password, role, date_creation, date_suppression, is_locked ) VALUES(?, ?, 'USER', now(), null, FALSE )", new String[]{"id_espece"});
             ps.setString(1, username);
             ps.setString(2, password );
             return ps;
@@ -37,19 +37,19 @@ public class UserRepository{
     }
 
     public int grantRole(long id_user, String role){
-        return jdbcTemplate.update("UPDATE USER SET role = ? WHERE id_user = ?;",role, id_user);
+        return jdbcTemplate.update("UPDATE USERS SET role = ? WHERE id_user = ?;",role, id_user);
     }
 
     public int grantRole(String username, String role){
-        return jdbcTemplate.update("UPDATE USER SET role = ? WHERE username = ?;",role, username);
+        return jdbcTemplate.update("UPDATE USERS SET role = ? WHERE username = ?;",role, username);
     }
 
     public int deleteUserById(String username){
-        return jdbcTemplate.update("UPDATE USER SET date_suppression = now(), is_locked = TRUE WHERE username = ?;", new Object[]{username});
+        return jdbcTemplate.update("UPDATE USERS SET date_suppression = now(), is_locked = TRUE WHERE username = ?;", new Object[]{username});
     }
 
     public boolean checkUsernameAvailable(String username){
-        Integer nbRow = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM USER WHERE username = ?", new Object[]{username}, Integer.class);
+        Integer nbRow = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM USERS WHERE username = ?", new Object[]{username}, Integer.class);
         if(nbRow==0){
             return true;
         }else{
