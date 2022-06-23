@@ -35,12 +35,12 @@ CREATE TABLE BATIMENT(
 );
 
 CREATE TABLE BALANCE(
-                        id_balance INT PRIMARY KEY AUTO_INCREMENT,
+                        id_balance INT PRIMARY KEY AUTO_INCREMENT
 
 );
 
 CREATE TABLE ANTENNE_RFID(
-                             id_antenne_rfid INT PRIMARY KEY AUTO_INCREMENT,
+                             id_antenne_rfid INT PRIMARY KEY AUTO_INCREMENT
 
 );
 
@@ -114,7 +114,7 @@ INSERT INTO ANTENNE_RFID VALUES(1);
 INSERT INTO ANTENNE_RFID VALUES(2);
 INSERT INTO ANTENNE_RFID VALUES(3);
 
-*/
+
 
 
 
