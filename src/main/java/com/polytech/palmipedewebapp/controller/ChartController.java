@@ -13,7 +13,7 @@ import java.sql.Date;
 import java.util.Map;
 
 @Controller
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = "*")
 @RequestMapping("chart")
 public class ChartController {
 

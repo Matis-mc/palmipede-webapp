@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = "*")
 @RequestMapping("ponte")
 public class PonteController {
 
